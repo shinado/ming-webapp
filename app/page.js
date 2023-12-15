@@ -59,7 +59,7 @@ export default function Home() {
           <div className="text-center text-white">
             <h1 className="text-6xl font-bold">MING COIN</h1>
             <p className="text-2xl mt-4">
-              A decentralized currency used in afterlife
+              A decentralized crypto currency used in afterlife
             </p>
             <WalletConnect
               onBurning={ref.current?.scrollIntoView({ behavior: "smooth" })}
@@ -182,7 +182,7 @@ export default function Home() {
 
               <div className="milestone">
                 <span className="milestone-date">1/3/2024</span>
-                <div className="milestone-details">
+                <div className="milestone-details"c>
                   <h3 className="milestone-title">Main event: Funding</h3>
                   <p className="milestone-description">Released on mainnet</p>
                 </div>
