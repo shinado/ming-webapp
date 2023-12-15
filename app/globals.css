@@ -25,3 +25,36 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+.milestone {
+  display: flex;
+  align-items: left;
+  margin-bottom: 20px;
+}
+
+.milestone-date {
+  font-size: 1.2em;
+  font-weight: bold;
+  width: 150px; /* Fixed width for the date */
+  color: #007bff; /* Change this color to suit your theme */
+  margin-right: 15px;
+}
+
+.milestone-details {
+  flex-grow: 1;
+  text-align: left; /* Aligns the content to the left */
+}
+
+.milestone-title {
+  font-size: 1.1em;
+  font-weight: bold;
+  color: #333;
+  margin: 0;
+  text-align: left; /* Aligns the title to the left */
+}
+
+.milestone-description {
+  font-size: 1em;
+  color: #666;
+  text-align: left; /* Aligns the title to the left */
+}

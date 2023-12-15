@@ -1,18 +1,17 @@
-import BigNumber from 'bignumber.js';
+import BigNumber from "bignumber.js";
 
 export default async function handler(req, res) {
-  const contractAddress = process.env.FUND_CONTRACT_ADDRESS;
+  const { contractAddress, userAddress } = req.query;
   const etherscanApiKey = process.env.ETHERSCAN_API_KEY;
 
   if (process.env.NODE_ENV === "development") {
-    const result =  "299554301959564534"
-    const totalFunds = toNumber(result)
-    res.status(200).json({ contractAddress, totalFunds});
+    const result = "299554301959564534";
+    const balance = toNumber(result);
+    res.status(200).json({ contractAddress, balance });
   } else {
     try {
-      const etherscanUrl = `https://api.etherscan.io/api?module=account&action=balance&address=${contractAddress}&tag=latest&apikey=${etherscanApiKey}`;
-      // //test code
-      // const etherscanUrl = `https://jsonplaceholder.typicode.com/posts/1`;
+      const etherscanUrl = `https://api.etherscan.io/api?module=account&action=tokenbalance
+      &contractaddress=${contractAddress}&address=${userAddress}&tag=latest&apikey=${etherscanApiKey}`;
 
       const response = await fetch(etherscanUrl);
       if (!response.ok) {
@@ -26,8 +25,8 @@ export default async function handler(req, res) {
         // const totalFunds = 1;
         // res.status(200).json({ contractAddress, totalFunds });
         if (data.status === "1" && data.message === "OK") {
-          const totalFunds = data.result; // Convert the result to ETH if needed
-          res.status(200).json({ contractAddress, totalFunds });
+          const balance = data.result; // Convert the result to ETH if needed
+          res.status(200).json({ contractAddress, balance });
         } else {
           throw new Error("Failed to fetch data from Etherscan");
         }
@@ -39,6 +38,6 @@ export default async function handler(req, res) {
   }
 }
 
-function toNumber(weiValue){
+function toNumber(weiValue) {
   return BigNumber(weiValue).dividedBy(1e18);
 }
