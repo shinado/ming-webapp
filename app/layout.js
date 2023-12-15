@@ -5,7 +5,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
   title: 'MING COIN',
-  description: 'A decentralized currency used in afterlife',
+  description: 'A decentralized crypto currency used in afterlife',
 }
 
 export default function RootLayout({ children }) {

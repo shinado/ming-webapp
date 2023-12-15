@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import { useState } from "react";
 import { useRef } from "react";
 import WalletConnect from "./walletConnect";
@@ -210,7 +209,7 @@ export default function Home() {
             <div>
               <h3 className="text-lg font-semibold">About $MING</h3>
               <p className="mt-2">
-                A decentralized currency used in afterlife.
+                A decentralized currency used in afterlife. Follow us on <a href="https://twitter.com/ming_coin_eth" className="text-blue-500 hover:text-blue-300">Twitter</a>
               </p>
               {/* Add more info or links here */}
             </div>
