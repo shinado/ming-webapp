@@ -74,7 +74,7 @@ export default function Fund() {
       <div className="text-lg font-semibold mb-2">How does it work?</div>
       <div className="mb-4 text-center max-w-md">
         All funds will be sent to the Funding contract and after funding is
-        over, you'll receive the same amount of $MING proportionate to the
+        over, after which you receive the same amount of $MING proportionate to the
         amount of ETH you donated. The ETH you funded will be sent to Uniswap to
         provide liquidity. For more information, please{" "}
         <a
