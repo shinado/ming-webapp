@@ -16,6 +16,17 @@
   }
 }
 
+button:disabled {
+  background-color: #666;
+}
+
+a{
+  color: #007bff;
+}
+a:hover{
+  color: #0051b3;
+}
+
 body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(

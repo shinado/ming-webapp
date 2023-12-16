@@ -2,30 +2,32 @@
 import { useState, useEffect } from "react";
 // import { ethers } from "ethers";
 import Funding from "../abi/Funding.json";
+import MingCoin from "../abi/MingCoin.json";
 const { ethers } = require("ethers");
 console.log(ethers);
 
-const abi = Funding.abi;
+const fundingABI = Funding.abi;
+const mingABI = MingCoin.abi;
 
 export default function Fund() {
   const [totalFunds, setTotalFunds] = useState(0);
   const [fundAmount, setFundAmount] = useState("");
 
-  useEffect(() => {
-    async function fetchContractData() {
-      const response = await fetch(
-        "/api/getBalanceOf?userAddress=" +
-          process.env.NEXT_PUBLIC_FUND_CONTRACT_ADDRESS +
-          "&contractAddress=" +
-          process.env.NEXT_PUBLIC_WETH_CONTRACT_ADDRESS
-      );
-      const data = await response.json();
+  async function fetchContractData() {
+    const response = await fetch(
+      "/api/getBalanceOf?userAddress=" +
+        process.env.NEXT_PUBLIC_FUND_CONTRACT_ADDRESS +
+        "&contractAddress=" +
+        process.env.NEXT_PUBLIC_WETH_CONTRACT_ADDRESS
+    );
+    const data = await response.json();
 
-      if (data.totalFunds) {
-        setTotalFunds(data.totalFunds); // Convert the result to ETH if needed
-      }
+    if (data.balance) {
+      setTotalFunds(data.balance); // Convert the result to ETH if needed
     }
+  }
 
+  useEffect(() => {
     fetchContractData();
   }, []);
 
@@ -38,29 +40,33 @@ export default function Fund() {
       if (provider) {
         const contract = new ethers.Contract(
           process.env.NEXT_PUBLIC_FUND_CONTRACT_ADDRESS,
-          abi,
+          fundingABI,
           provider
         );
-        contract.on("LogData", (msg) => {
-          console.log("LogData:", msg);
-        });
-
         const signer = await provider.getSigner();
-        const contractWithSigner = contract.connect(signer);
-
-        const myBalance = await contract.balance();
-        console.log("balance: " + myBalance);
+        const fundingContract = contract.connect(signer);
 
         // Convert the amount to Wei (1 ETH = 1e18 Wei)
         const amountInWei = ethers.parseEther(fundAmount);
-
         try {
-          const tx = await contractWithSigner.fund({ value: amountInWei });
-        } catch (e) {}
+          const tx = await fundingContract.fund4TestOnly({
+            value: amountInWei,
+          });
+          // Wait for the transaction to be confirmed
+          await tx.wait();
 
-        // Wait for the transaction to be confirmed
-        await tx.wait();
-        console.log("Transaction successful");
+          const mingContract = new ethers.Contract(
+            process.env.NEXT_PUBLIC_MING_CONTRACT_ADDRESS,
+            mingABI,
+            provider
+          );
+
+          const signerAddress = await signer.getAddress();
+          const balanceOfMing = await mingContract.balanceOf(signerAddress);
+          alert("Funding succeed, balance is: " + balanceOfMing);
+        } catch (e) {
+          console.log("Error: " + e);
+        }
       }
     } else {
       console.log("Install MetaMask");
@@ -74,9 +80,9 @@ export default function Fund() {
       <div className="text-lg font-semibold mb-2">How does it work?</div>
       <div className="mb-4 text-center max-w-md">
         All funds will be sent to the Funding contract and after funding is
-        over, after which you receive the same amount of $MING proportionate to the
-        amount of ETH you donated. The ETH you funded will be sent to Uniswap to
-        provide liquidity. For more information, please{" "}
+        over, after which you receive the same amount of $MING proportionate to
+        the amount of ETH you donated. The ETH you funded will be sent to
+        Uniswap to provide liquidity. For more information, please{" "}
         <a
           href="LINK_TO_WHITEPAPER"
           className="text-blue-500 hover:text-blue-700"

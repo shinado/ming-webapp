@@ -1,8 +1,24 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import BigNumber from "bignumber.js";
+const { ethers } = require("ethers");
+const { abi } = require("./abi/MingCoin.json");
+import { useStatus } from "./WalletStatus"; // adjust the path as needed
 
-const WalletConnect = ({ onBurning }) => {
-  const [userAddress, setUserAddress] = useState("");
-  const [mingBalance, setMingBalance] = useState(0);
+const WalletConnect = ({ onBurning, onWalletConnected = () => {}, isLoading = false }) => {
+  const { connecting, status, checkStatus, connectWallet } = useStatus();
+  const [loading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    checkStatus();
+  }, []);
+
+  useEffect(() => {
+    setIsLoading(isLoading);
+  }, [isLoading]);
+
+  useEffect(() => {
+    onWalletConnected(status.address, status.balance);
+  }, [status.balance]);
 
   const handleGetMing = async () => {
     try {
@@ -23,87 +39,23 @@ const WalletConnect = ({ onBurning }) => {
     }
   };
 
-  const switchNetwork = async (chainId) => {
-    // Check if Goerli network (chainId: 5) is selected
-    if (window.ethereum.chainId !== chainId) {
-      try {
-        // Request to switch to the Goerli testnet
-        await window.ethereum.request({
-          method: "wallet_switchEthereumChain",
-          params: [{ chainId: chainId }],
-        });
-      } catch (switchError) {
-        if (switchError.code === 4902) {
-          try {
-            // Request to add the Goerli testnet
-            await window.ethereum.request({
-              method: "wallet_addEthereumChain",
-              params: [
-                {
-                  chainId: goerliChainId,
-                  chainName: "Goerli Test Network",
-                  rpcUrls: [
-                    "https://goerli.infura.io/v3/YOUR_INFURA_PROJECT_ID",
-                  ],
-                  nativeCurrency: {
-                    name: "Goerli ETH",
-                    symbol: "GOR",
-                    decimals: 18,
-                  },
-                  blockExplorerUrls: ["https://goerli.etherscan.io"],
-                },
-              ],
-            });
-          } catch (addError) {
-            console.error("Failed to add Goerli testnet:", addError);
-          }
-        } else {
-          console.error("Failed to switch to Goerli testnet:", switchError);
-        }
-      }
-    }
-  };
-
-  const connectWalletHandler = async () => {
-    if (typeof window.ethereum !== "undefined") {
-      try {
-        // Request account access
-        const accounts = await window.ethereum.request({
-          method: "eth_requestAccounts",
-        });
-        setUserAddress(accounts[0]);
-
-        await switchNetwork("0x5");
-
-        const response = await fetch(
-          "/api/getBalanceOf?contractAddress=" +
-            process.env.NEXT_PUBLIC_MING_CONTRACT_ADDRESS
-        );
-        const data = await response.json();
-        setMingBalance(data.balance);
-      } catch (error) {
-        console.error("Error connecting to wallet:", error);
-      }
-    } else {
-      console.log("Install MetaMask");
-    }
-  };
-
   const renderButton = () => {
-    if (!userAddress) {
+    if (status.address === "") {
       return (
         <button
           className="mt-8 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          onClick={connectWalletHandler}
+          onClick={connectWallet}
+          disabled={connecting}
         >
-          Connect Wallet
+          {connecting ? "Connecting..." : "Connect Wallet"}
         </button>
       );
-    } else if (!mingBalance) {
+    } else if (status.balance !== "0") {
       return (
         <button
           className="mt-8 bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           onClick={onBurning}
+          disabled={loading}
         >
           Burn $MING
         </button>
