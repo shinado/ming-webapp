@@ -3,13 +3,16 @@ import BigNumber from "bignumber.js";
 const { ethers } = require("ethers");
 const { abi } = require("./abi/MingCoin.json");
 
-const WalletStatus = createContext();
+const WalletStatus = createContext({
+  status: { address: "", balance: "" },
+  connecting: false
+});
 export const useStatus = () => useContext(WalletStatus);
 
 export const StatusProvider = ({ children }) => {
   const [status, setStatus] = useState({
     address: "",
-    balance: ""
+    balance: "",
   });
 
   const [connecting, setConnecting] = useState(false);
@@ -33,7 +36,6 @@ export const StatusProvider = ({ children }) => {
         address: address,
         balance: number,
       });
-    
     } catch (error) {
       console.error("Error fetching balance:", error);
       setStatus({
@@ -133,7 +135,9 @@ export const StatusProvider = ({ children }) => {
   };
 
   return (
-    <WalletStatus.Provider value={{ connecting, status, checkStatus, connectWallet }}>
+    <WalletStatus.Provider
+      value={{ connecting, status, checkStatus, connectWallet }}
+    >
       {children}
     </WalletStatus.Provider>
   );

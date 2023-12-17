@@ -5,8 +5,7 @@ const { abi } = require("./abi/MingCoin.json");
 import { useStatus } from "./WalletStatus"; // adjust the path as needed
 
 const WalletConnect = ({ onBurning, onWalletConnected = () => {}, isLoading = false }) => {
-  const connecting = false;
-  const { status, checkStatus, connectWallet } = useStatus();
+  const { connecting, status, checkStatus, connectWallet } = useStatus();
   const [loading, setIsLoading] = useState(false);
 
   useEffect(() => {
