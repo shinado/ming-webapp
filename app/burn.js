@@ -120,4 +120,13 @@ const Burn = forwardRef((props, ref) => {
   );
 });
 
+/**
+ * Your code shows that you are using the forwardRef API in React and assigning it to a constant named Burn. 
+ * This approach is generally correct, but the error you're encountering suggests that the component might be
+ *  missing an explicit display name, which is particularly important when using higher-order components or 
+ * APIs like forwardRef.
+ * To resolve this, you can explicitly set the displayName property on your component. 
+ * Here's how you can modify your code:
+ */
+Burn.displayName = "Burn";
 export default Burn;
