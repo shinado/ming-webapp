@@ -24,6 +24,7 @@ export async function getBalanceOfMing(userAddress) {
 }
 
 export async function getBalanceOfERC20(userAddress, contractAddress) {
+  console.log("getBalanceOfERC20(%s, %s)", userAddress, contractAddress);
   if (typeof window.ethereum !== "undefined") {
     const provider = new ethers.BrowserProvider(window.ethereum);
     if (provider) {
