@@ -4,7 +4,11 @@ const { ethers } = require("ethers");
 const { abi } = require("./abi/MingCoin.json");
 import { useStatus } from "./WalletStatus"; // adjust the path as needed
 
-const WalletConnect = ({ onBurning, onWalletConnected = () => {}, isLoading = false }) => {
+const WalletConnect = ({
+  onBurning,
+  onWalletConnected = () => {},
+  isLoading = false,
+}) => {
   const { connecting, status, checkStatus, connectWallet } = useStatus();
   const [loading, setIsLoading] = useState(false);
 
@@ -57,7 +61,7 @@ const WalletConnect = ({ onBurning, onWalletConnected = () => {}, isLoading = fa
           onClick={onBurning}
           disabled={loading}
         >
-          Burn $MING
+          {loading ? "Burning..." : "Burn $MING"}
         </button>
       );
     } else {

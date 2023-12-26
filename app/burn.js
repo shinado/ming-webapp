@@ -4,37 +4,20 @@ const { ethers } = require("ethers");
 
 import MingCoin from "./abi/MingCoin.json";
 import WalletConnect from "./walletConnect";
+import { getBalanceOfMing } from "./public_api";
 const abi = MingCoin.abi;
 
 const Burn = forwardRef((props, ref) => {
   const [balance, setBalance] = useState("");
-  console.log("ref is: ", ref);
-
   // useEffect(() => {
   //   setBalance(props.mingBalance);
   // }, [props.mingBalance]);
 
   const fetchMingBalance = async (address) => {
     console.log("fetchMingBalance()");
-    if (typeof window.ethereum !== "undefined") {
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      // const provider = new ethers.providers.Web3Provider(window.ethereum);
-      if (provider) {
-        const contract = new ethers.Contract(
-          process.env.NEXT_PUBLIC_MING_CONTRACT_ADDRESS,
-          abi,
-          provider
-        );
-
-        const balance = await contract.balanceOf(address);
-        console.log("balance: " + balance);
-        setBalance(BigNumber(balance).dividedBy(1e18).toString());
-      } else {
-        console.log("provider not found.");
-      }
-    } else {
-      console.log("wallet not installed.");
-    }
+    const balance = await getBalanceOfMing(address);
+    console.log("balance: " + balance);
+    setBalance(BigNumber(balance).dividedBy(1e18).toString());
   };
 
   const [personName, setPersonName] = useState("");
@@ -64,7 +47,7 @@ const Burn = forwardRef((props, ref) => {
           await tx.wait();
           console.log("Transaction successful");
           setLoading(false);
-          fetchMingBalance();
+          fetchMingBalance(signer.address);
         } catch (error) {
           console.log("Transaction failed:", error);
           setLoading(false);
@@ -121,11 +104,11 @@ const Burn = forwardRef((props, ref) => {
 });
 
 /**
- * Your code shows that you are using the forwardRef API in React and assigning it to a constant named Burn. 
+ * Your code shows that you are using the forwardRef API in React and assigning it to a constant named Burn.
  * This approach is generally correct, but the error you're encountering suggests that the component might be
- *  missing an explicit display name, which is particularly important when using higher-order components or 
+ *  missing an explicit display name, which is particularly important when using higher-order components or
  * APIs like forwardRef.
- * To resolve this, you can explicitly set the displayName property on your component. 
+ * To resolve this, you can explicitly set the displayName property on your component.
  * Here's how you can modify your code:
  */
 Burn.displayName = "Burn";

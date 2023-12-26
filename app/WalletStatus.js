@@ -1,11 +1,12 @@
 import React, { createContext, useState, useContext } from "react";
 import BigNumber from "bignumber.js";
+import { getBalanceOfMing } from "./public_api";
 const { ethers } = require("ethers");
 const { abi } = require("./abi/MingCoin.json");
 
 const WalletStatus = createContext({
   status: { address: "", balance: "" },
-  connecting: false
+  connecting: false,
 });
 export const useStatus = () => useContext(WalletStatus);
 
@@ -20,29 +21,14 @@ export const StatusProvider = ({ children }) => {
   //get balance
   const onAddressChanged = async (address) => {
     console.log("address changed: " + address);
-    try {
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      const contract = new ethers.Contract(
-        process.env.NEXT_PUBLIC_MING_CONTRACT_ADDRESS,
-        abi,
-        provider
-      );
+    const balance = await getBalanceOfMing(address);
+    console.log("balance: " + balance);
+    const number = BigNumber(balance).dividedBy(1e18).toString();
 
-      const balance = await contract.balanceOf(address);
-      console.log("balance: " + balance);
-      const number = BigNumber(balance).dividedBy(1e18).toString();
-
-      setStatus({
-        address: address,
-        balance: number,
-      });
-    } catch (error) {
-      console.error("Error fetching balance:", error);
-      setStatus({
-        address: address,
-        balance: "",
-      });
-    }
+    setStatus({
+      address: address,
+      balance: number,
+    });
   };
 
   // Function to update status

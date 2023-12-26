@@ -3,28 +3,32 @@ import { useState, useEffect } from "react";
 // import { ethers } from "ethers";
 import Funding from "../abi/Funding.json";
 import MingCoin from "../abi/MingCoin.json";
+import { getFundingAmount } from "../public_api";
 const { ethers } = require("ethers");
-console.log(ethers);
 
 const fundingABI = Funding.abi;
-const mingABI = MingCoin.abi;
 
 export default function Fund() {
   const [totalFunds, setTotalFunds] = useState(0);
   const [fundAmount, setFundAmount] = useState("");
+  const [amountOfMing, setAmountOfMing] = useState(0);
+  const [loading, setIsLoading] = useState(false);
 
   async function fetchContractData() {
-    const response = await fetch(
-      "/api/getBalanceOf?userAddress=" +
-        process.env.NEXT_PUBLIC_FUND_CONTRACT_ADDRESS +
-        "&contractAddress=" +
-        process.env.NEXT_PUBLIC_WETH_CONTRACT_ADDRESS
-    );
-    const data = await response.json();
+    const balance = await getFundingAmount();
 
-    if (data.balance) {
-      setTotalFunds(data.balance); // Convert the result to ETH if needed
-    }
+    setTotalFunds(balance);
+    // const response = await fetch(
+    //   "/api/getBalanceOf?userAddress=" +
+    //     process.env.NEXT_PUBLIC_FUND_CONTRACT_ADDRESS +
+    //     "&contractAddress=" +
+    //     process.env.NEXT_PUBLIC_WETH_CONTRACT_ADDRESS
+    // );
+    // const data = await response.json();
+
+    // if (data.balance) {
+    //   setTotalFunds(data.balance); // Convert the result to ETH if needed
+    // }
   }
 
   useEffect(() => {
@@ -33,6 +37,7 @@ export default function Fund() {
 
   const handleFund = async () => {
     // TODO: Implement funding logic using the contract
+    setIsLoading(true);
     console.log(`Funding with amount: ${fundAmount} ETH`);
     if (typeof window.ethereum !== "undefined") {
       const provider = new ethers.BrowserProvider(window.ethereum);
@@ -55,22 +60,25 @@ export default function Fund() {
           // Wait for the transaction to be confirmed
           await tx.wait();
 
-          const mingContract = new ethers.Contract(
-            process.env.NEXT_PUBLIC_MING_CONTRACT_ADDRESS,
-            mingABI,
-            provider
-          );
-
-          const signerAddress = await signer.getAddress();
-          const balanceOfMing = await mingContract.balanceOf(signerAddress);
-          alert("Funding succeed, balance is: " + balanceOfMing);
+          const amountReceived = amountOfMing;
+          fetchContractData();
+          setIsLoading(false);
+          onNumberChange(0)
+          alert("You've recieved " + amountReceived + " $MING!");
         } catch (e) {
-          console.log("Error: " + e);
+          alert("Error: " + e);
+          setIsLoading(false);
         }
       }
     } else {
       console.log("Install MetaMask");
+      setIsLoading(false);
     }
+  };
+
+  const onNumberChange = (value) => {
+    setFundAmount(value);
+    setAmountOfMing(value * 2222222222222);
   };
 
   return (
@@ -79,10 +87,10 @@ export default function Fund() {
       <div className="text-xl mb-4">Initiate $MING with a fair launch</div>
       <div className="text-lg font-semibold mb-2">How does it work?</div>
       <div className="mb-4 text-center max-w-md">
-        All funds will be sent to the Funding contract and after funding is
-        over, after which you receive the same amount of $MING proportionate to
-        the amount of ETH you donated. The ETH you funded will be sent to
-        Uniswap to provide liquidity. For more information, please{" "}
+        We set the initiatial $MING price at 1 ETH = 2,222,222,222,222 $MING,
+        aiming to raise 100 ETH. After it reaches the funding goal, all funds
+        will be sent to Uniswap, along with the other half of $MING to provide
+        liquidity. For more information, please{" "}
         <a
           href="LINK_TO_WHITEPAPER"
           className="text-blue-500 hover:text-blue-700"
@@ -94,18 +102,23 @@ export default function Fund() {
       <div className="text-xl font-bold mb-4">
         Total Funds Raised: {totalFunds} ETH
       </div>
+
       <input
         type="number"
         value={fundAmount}
-        onChange={(e) => setFundAmount(e.target.value)}
+        onChange={(e) => onNumberChange(e.target.value)}
         placeholder="Amount of ETH"
         className="p-2 border border-gray-300 rounded text-black"
       />
+      <div className="text-m font-bold mb-4 mt-1">
+        You will receive: {amountOfMing} MING
+      </div>
       <button
         onClick={handleFund}
         className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        disabled={loading}
       >
-        Fund
+        {loading ? "Funding..." : "Fund"}
       </button>
     </div>
   );
