@@ -53,9 +53,7 @@ export async function getBurningInfo(address) {
         abi,
         provider
       );
-      const result = contract.methods
-        .getBurning(address)
-        .call();
+      const result = contract.getBurning(address)
       console.log("result:", result);
       return result;
     } else {

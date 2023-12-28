@@ -1,5 +1,4 @@
 import React, { createContext, useState, useContext } from "react";
-import BigNumber from "bignumber.js";
 import { getBalanceOfMing } from "./public_api";
 const { ethers } = require("ethers");
 const { abi } = require("./abi/MingCoin.json");
@@ -23,11 +22,10 @@ export const StatusProvider = ({ children }) => {
     console.log("address changed: " + address);
     const balance = await getBalanceOfMing(address);
     console.log("balance: " + balance);
-    const number = BigNumber(balance).dividedBy(1e18).toString();
 
     setStatus({
       address: address,
-      balance: number,
+      balance: balance,
     });
   };
 

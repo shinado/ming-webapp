@@ -1,10 +1,8 @@
 import React, { useState, useEffect, forwardRef } from "react";
-import BigNumber from "bignumber.js";
 const { ethers } = require("ethers");
 
 import MingCoin from "./abi/MingCoin.json";
 import WalletConnect from "./walletConnect";
-import { getBalanceOfMing } from "./public_api";
 const abi = MingCoin.abi;
 
 const Burn = forwardRef((props, ref) => {
@@ -12,13 +10,6 @@ const Burn = forwardRef((props, ref) => {
   // useEffect(() => {
   //   setBalance(props.mingBalance);
   // }, [props.mingBalance]);
-
-  const fetchMingBalance = async (address) => {
-    console.log("fetchMingBalance()");
-    const balance = await getBalanceOfMing(address);
-    console.log("balance: " + balance);
-    setBalance(BigNumber(balance).dividedBy(1e18).toString());
-  };
 
   const [personName, setPersonName] = useState("");
   const [mingAmount, setMingAmount] = useState("");
@@ -45,10 +36,11 @@ const Burn = forwardRef((props, ref) => {
           const tx = await contractWithSigner.burn(personName, amout);
           // Wait for the transaction to be confirmed
           await tx.wait();
-          console.log("Transaction successful");
+          const address = await contractWithSigner.getAddressByName(personName);
+          console.log("ghost address:", address);
           setLoading(false);
-          
-          fetchMingBalance(signer.address);
+
+          window.href.navigate("/hall?address=" + address);
         } catch (error) {
           console.log("Transaction failed:", error);
           setLoading(false);
