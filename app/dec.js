@@ -5,7 +5,7 @@ export default function Decentralized() {
         <div className="md:w-3/5 p-8">
           <img
             src="/eth-note.webp"
-            alt="Fully Decentralized"
+            alt="Fair Launch"
             className="object-cover h-full w-full rounded-md"
           />
         </div>
@@ -15,7 +15,7 @@ export default function Decentralized() {
               Decentralized
             </h2>
             <p className="mt-4 text-lg text-gray-500">
-              $MING is a fully decentralized project. All tokens are distributed
+              All $MINGs are distributed
               in a fair launch way. No pre-mined, no reserved distribution.
               <a
                 target="_blank"

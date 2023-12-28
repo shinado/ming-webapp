@@ -47,6 +47,7 @@ const Burn = forwardRef((props, ref) => {
           await tx.wait();
           console.log("Transaction successful");
           setLoading(false);
+          
           fetchMingBalance(signer.address);
         } catch (error) {
           console.log("Transaction failed:", error);

@@ -77,7 +77,7 @@ export const StatusProvider = ({ children }) => {
                   chainId: goerliChainId,
                   chainName: "Goerli Test Network",
                   rpcUrls: [
-                    "https://goerli.infura.io/v3/YOUR_INFURA_PROJECT_ID",
+                    "https://rpc.ankr.com/eth_goerli",
                   ],
                   nativeCurrency: {
                     name: "Goerli ETH",

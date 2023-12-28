@@ -42,3 +42,28 @@ export async function getBalanceOfERC20(userAddress, contractAddress) {
     return "";
   }
 }
+
+export async function getBurningInfo(address) {
+  console.log("getBurningInfo(%s)", address);
+  if (typeof window.ethereum !== "undefined") {
+    const provider = new ethers.BrowserProvider(window.ethereum);
+    if (provider) {
+      const contract = new ethers.Contract(
+        process.env.NEXT_PUBLIC_MING_CONTRACT_ADDRESS,
+        abi,
+        provider
+      );
+      const result = contract.methods
+        .getBurning(address)
+        .call();
+      console.log("result:", result);
+      return result;
+    } else {
+      console.log("provider not found.");
+      return "";
+    }
+  } else {
+    console.log("wallet not installed.");
+    return "";
+  }
+}
