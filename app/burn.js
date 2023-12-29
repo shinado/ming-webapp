@@ -72,15 +72,6 @@ const Burn = forwardRef((props, ref) => {
     }
   };
 
-  // Custom Input Component with forwardRef
-  const CustomInput = React.forwardRef(
-    ({ value, onClick, placeholder }, ref) => (
-      <button className="custom-input" onClick={onClick} ref={ref}>
-        {value || placeholder}
-      </button>
-    )
-  );
-
   return (
     <div ref={ref} className="bg-white py-40 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto text-center">
