@@ -12,7 +12,7 @@ export default function Decentralized() {
         <div className="md:w-2/5 flex items-center justify-center p-8">
           <div>
             <h2 className="text-3xl font-extrabold text-gray-900">
-              Decentralized
+              Fair Launch
             </h2>
             <p className="mt-4 text-lg text-gray-500">
               All $MINGs are distributed

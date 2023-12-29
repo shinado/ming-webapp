@@ -69,3 +69,16 @@ body {
   color: #666;
   text-align: left; /* Aligns the title to the left */
 }
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 0; /* Adjust as needed */
+}
+
+td, th {
+  padding-left: 4px; 
+  padding-right: 4px; 
+  text-align: left;
+  font-size: 14px; /* Set a smaller font size, adjust as needed */
+}

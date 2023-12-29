@@ -43,8 +43,8 @@ export async function getBalanceOfERC20(userAddress, contractAddress) {
   }
 }
 
-export async function getBurningInfo(address) {
-  console.log("getBurningInfo(%s)", address);
+export async function getProfileList(type, address) {
+  console.log("getProfileList(%s, %s)", type, address);
   if (typeof window.ethereum !== "undefined") {
     const provider = new ethers.BrowserProvider(window.ethereum);
     if (provider) {
@@ -53,9 +53,7 @@ export async function getBurningInfo(address) {
         abi,
         provider
       );
-      const result = contract.getBurning(address)
-      console.log("result:", result);
-      return result;
+      return contract.getProfileList(type, address);
     } else {
       console.log("provider not found.");
       return "";
@@ -64,4 +62,34 @@ export async function getBurningInfo(address) {
     console.log("wallet not installed.");
     return "";
   }
+}
+
+export async function getBaseProfile(address) {
+  console.log("getBaseProfile(%s)", address);
+  if (typeof window.ethereum !== "undefined") {
+    const provider = new ethers.BrowserProvider(window.ethereum);
+    if (provider) {
+      const contract = new ethers.Contract(
+        process.env.NEXT_PUBLIC_MING_CONTRACT_ADDRESS,
+        abi,
+        provider
+      );
+      return contract.getBaseProfile(address);
+    } else {
+      console.log("provider not found.");
+      return "";
+    }
+  } else {
+    console.log("wallet not installed.");
+    return "";
+  }
+}
+
+export function getImageUrl(ipfs) {
+  const url =
+    "https://azure-capable-tarsier-228.mypinata.cloud/ipfs/" +
+    ipfs +
+    "?pinataGatewayToken=Y1SFs71_pbEHov9sKJ2CrI2NAtBdbDDXdCScS9EYWtQWuBGEsESQT1Ag4eCJuN_H";
+  console.log("getImageUrl:", url);
+  return url;
 }
