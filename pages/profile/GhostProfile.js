@@ -13,8 +13,8 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import { styled } from "@mui/system";
-import Transactions from "../transaction";
-import { getImageUrl, getProfileList } from "../public_api";
+import Transactions from "../../app/transaction";
+import { getImageUrl, getProfileList } from "../../app/public_api";
 import EditProfileDialog from "./EditProfileDialog";
 const axios = require("axios");
 

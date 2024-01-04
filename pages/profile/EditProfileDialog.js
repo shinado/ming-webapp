@@ -8,7 +8,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Link from "@mui/material/Link";
 
-const { abi } = require("../abi/MingCoin.json");
+const { abi } = require("../../app/abi/MingCoin.json");
 const { ethers } = require("ethers");
 
 const EditProfileDialog = ({
