@@ -294,4 +294,5 @@ const GhostProfile = ({ user }) => {
   );
 };
 
+GhostProfile.displayName = "GhostProfile";
 export default GhostProfile;

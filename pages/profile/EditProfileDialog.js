@@ -138,4 +138,5 @@ const EditProfileDialog = ({
   );
 };
 
+EditProfileDialog.displayName = "EditProfileDialog";
 export default EditProfileDialog;
