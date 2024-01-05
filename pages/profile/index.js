@@ -2,11 +2,10 @@
 import React from "react";
 import "../../app/globals.css"; // Adjust the path to your global CSS file
 import { useRouter } from "next/router";
-import GhostProfile from "./GhostProfile";
+import GhostProfile from "../../components/profile/GhostProfile";
 import { useEffect, useState } from "react";
 import {
   getBaseProfile,
-  getImageUrl,
   getProfileList,
 } from "../../app/public_api";
 import BigNumber from "bignumber.js";
@@ -31,10 +30,10 @@ export default function Profile() {
   const [profile, setProfile] = useState({
     name: "",
     displayName: "",
-    bio: "",
-    address: address,
-    portrait: "./usd.webp",
-    banner: "./banner.png",
+    address: "",
+    portraits: [],
+    banners: [],
+    bios: [],
     amount: "",
     transactions: [],
     collections: [],
@@ -61,22 +60,13 @@ export default function Profile() {
             console.log("banners:", banners);
             console.log("bios:", bios);
 
-            const banner = [...banners].sort((a, b) => {
-              return BigNumber(b.value).minus(a.value);
-            });
-            const portrait = [...portraits].sort((a, b) => {
-              return BigNumber(b.value).minus(a.value);
-            });
-            const bio = [...bios].sort((a, b) => {
-              return BigNumber(b.value).minus(a.value);
-            });
-
             // Update the profile state only once with all the new values
             setProfile((prevProfile) => ({
               ...prevProfile,
-              banner: banner[0] == null ? "" : getImageUrl(banner[0].key),
-              portrait: portrait[0] == null ? "" : getImageUrl(portrait[0].key),
-              bio: bio[0] == null ? "" : bio[0].key,
+              banners: banners,
+              portraits: portraits,
+              bios: bios,
+              address: address, //reset address to make sure it is loaded
               name: baseProfileResult.name,
               displayName: baseProfileResult.displayName,
               amount: BigNumber(baseProfileResult.amount)
@@ -93,9 +83,31 @@ export default function Profile() {
     }
   }, [isReady, address]); // Ensure the useEffect runs again if the address changes
 
+  const refreshProfile = async (type) => {
+    getProfileList(type, profile.address).then((result) => {
+      if (type == 3) {
+        setProfile((prevProfile) => ({
+          ...prevProfile,
+          bios: result,
+        }));
+      } else if (type == 2) {
+        setProfile((prevProfile) => ({
+          ...prevProfile,
+          portraits: result,
+        }));
+      } else if (type == 1) {
+        setProfile((prevProfile) => ({
+          ...prevProfile,
+          banners: result,
+        }));
+      }
+    });
+  };
+
   return (
     <div>
-      <GhostProfile user={profile} />
+      {/* how do I receive type? */}
+      <GhostProfile profile={profile} refreshProfile={refreshProfile} />
     </div>
   );
 }

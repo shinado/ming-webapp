@@ -3,7 +3,7 @@ import React from "react";
 import "../../app/globals.css"; // Adjust the path to your global CSS file
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import Transactions from "../../app/transaction";
+import Transactions from "../../components/profile/Transaction";
 
 async function getTransactions(address) {
   try {

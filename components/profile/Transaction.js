@@ -15,8 +15,8 @@ function Transactions(props) {
       <tbody>
         {data.map((item, index) => (
           <tr key={index}>
-            <td>{item.from}</td>
-            <td>{item.to}</td>
+            <td><a href={`/history?address=${item.from}`}>{item.from}</a></td>
+            <td><a href={`/profile?address=${item.to}`}>{item.to}</a></td>
             <td>{item.value}</td>
           </tr>
         ))}

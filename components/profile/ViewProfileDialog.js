@@ -4,27 +4,24 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Link from "@mui/material/Link";
+import TextVotings from "./TextVotings";
+import ImageVotings from "./ImageVotings";
 
 const { abi } = require("../../app/abi/MingCoin.json");
 const { ethers } = require("ethers");
 
-const EditProfileDialog = ({
+const ViewProfileDialog = ({
   address,
   open,
   onClose,
   onUpdate,
-  initValue,
+  values,
   type,
+  onVote,
+  onAdd,
 }) => {
-  const [value, setValue] = useState("");
-
-  useEffect(() => {
-    setValue(initValue);
-  }, [initValue]);
-
   const contents = {
     1: {
       title: "Edit Banner",
@@ -40,10 +37,54 @@ const EditProfileDialog = ({
     },
   }[type];
 
+  let desc = "";
+  if (type == 1) {
+    desc =
+      values.length == 0 ? (
+        <Typography variant="body1" sx={{ marginBottom: 2 }}>
+          Upload a profile for banner.
+        </Typography>
+      ) : (
+        <Typography variant="body1" sx={{ marginBottom: 2 }}>
+          Anyone with $MING is able to vote for the profile. The one with most votes will be displayed on the profile page.
+          You can vote for an existing banner or{" "}
+          <Link onClick={onAdd}>add a new one</Link>. Learn more about{" "}
+          <Link href="#">how votes work</Link>.
+        </Typography>
+      );
+  } else if (type == 2) {
+    desc =
+      values.length == 0 ? (
+        <Typography variant="body1" sx={{ marginBottom: 2 }}>
+          Upload a profile for portrait.
+        </Typography>
+      ) : (
+        <Typography variant="body1" sx={{ marginBottom: 2 }}>
+          Anyone with $MING is able to vote for the profile. The one with most votes will be displayed on the profile page.
+          You can vote for an existing portrait or{" "}
+          <Link onClick={onAdd}>add a new one</Link>. Learn more about{" "}
+          <Link href="#">how votes work</Link>.
+        </Typography>
+      );
+  } else if (type == 3) {
+    desc =
+      values.length == 0 ? (
+        <Typography variant="body1" sx={{ marginBottom: 2 }}>
+          Add a bio.
+        </Typography>
+      ) : (
+        <Typography variant="body1" sx={{ marginBottom: 2 }}>
+          Anyone with $MING is able to vote for the bio. The one with most votes will be displayed on the profile page.
+          You can vote for an existing bio or <Link href="">add a new one</Link>
+          . Learn more about <Link href="#">how votes work</Link>.
+        </Typography>
+      );
+  }
+
   const [loading, setLoading] = useState(false);
   const [amount, setAmount] = useState(0);
 
-  const handleSave = async () => {
+  const handleVote = async (value) => {
     setLoading(true);
     if (typeof window.ethereum !== "undefined") {
       const provider = new ethers.BrowserProvider(window.ethereum);
@@ -99,44 +140,29 @@ const EditProfileDialog = ({
     <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
       <DialogTitle>{contents.title}</DialogTitle>
       <DialogContent>
-        <Typography variant="body1" sx={{ marginBottom: 2 }}>
-          You can either update the profile or vote for an{" "}
-          <Link href="#">existing profile</Link>. Learn more about{" "}
-          <Link href="#">how votes work</Link>.
-        </Typography>
-        <TextField
-          autoFocus
-          InputProps={{ readOnly: type !== 3 }}
-          margin="dense"
-          id="profile"
-          label={contents.label}
-          type="text"
-          fullWidth
-          variant="standard"
-          value={value}
-          onChange={handleValueChange}
-        />
-
-        <TextField
-          margin="dense"
-          id="amount"
-          label="Votes"
-          type="number"
-          fullWidth
-          variant="standard"
-          value={amount}
-          onChange={handleAmountChange}
-        />
+        {desc}
+        {type == 3 ? (
+          <TextVotings
+            data={values}
+            onVote={(item) => {
+              onVote(item);
+            }}
+          />
+        ) : (
+          <ImageVotings
+            data={values}
+            onVote={(item) => {
+              onVote(item);
+            }}
+          />
+        )}
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
-        <Button onClick={handleSave} disabled={loading}>
-          {loading ? "saving..." : "Save"}
-        </Button>
+        <Button onClick={onAdd}>Add</Button>
       </DialogActions>
     </Dialog>
   );
 };
 
-EditProfileDialog.displayName = "EditProfileDialog";
-export default EditProfileDialog;
+export default ViewProfileDialog;

@@ -1,6 +1,20 @@
-const { ethers } = require("ethers");
+const { ethers, parseUnits } = require("ethers");
 const { abi } = require("./abi/MingCoin.json");
 import BigNumber from "bignumber.js";
+
+export function sortData(data) {
+  return [...data].sort((a, b) => {
+    return new BigNumber(b.value).minus(new BigNumber(a.value)).toNumber();
+  });
+}
+
+export function getDisplayableValueFromContract(amount) {
+  return BigNumber(amount).dividedBy(1e18).toString();
+}
+
+export function getContractValueFromDisplayable(amount) {
+  return parseUnits(amount, 18);
+}
 
 export async function getFundingAmount() {
   return getBalanceOfERC20(
@@ -90,6 +104,5 @@ export function getImageUrl(ipfs) {
     "https://azure-capable-tarsier-228.mypinata.cloud/ipfs/" +
     ipfs +
     "?pinataGatewayToken=Y1SFs71_pbEHov9sKJ2CrI2NAtBdbDDXdCScS9EYWtQWuBGEsESQT1Ag4eCJuN_H";
-  console.log("getImageUrl:", url);
   return url;
 }

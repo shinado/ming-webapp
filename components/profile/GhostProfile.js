@@ -13,10 +13,11 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import { styled } from "@mui/system";
-import Transactions from "../../app/transaction";
-import { getImageUrl, getProfileList } from "../../app/public_api";
-import EditProfileDialog from "./EditProfileDialog";
-const axios = require("axios");
+import Transactions from "./Transaction";
+import AddProfileDialog from "./AddProfileDialog";
+import { getImageUrl, sortData } from "../../app/public_api";
+import ViewProfileDialog from "./ViewProfileDialog";
+import LoadingDialog from "./LoadingDialog";
 
 const Banner = styled(Paper)({
   position: "relative",
@@ -121,58 +122,78 @@ const EditButton = styled(Button)({
   position: "absolute",
 });
 
-const GhostProfile = ({ user }) => {
-  const fileInputRef = useRef(null);
+const GhostProfile = ({ profile, refreshProfile }) => {
+  const bannerFileInputRef = useRef(null);
+  const portraitFileInputRef = useRef(null);
+  const [uploading, setIsUploading] = useState(false);
+
+  const [viewProfileDialogStatus, setViewProfileDialogStatus] = useState({
+    open: false,
+    type: 1,
+    values: [],
+  });
 
   const [dialogStatus, setDialogStatus] = useState({
     open: false,
     type: 1,
     init: "",
+    values: [],
+    editable: true,
   });
+
   // const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   // const [dialogType, setDialogType] = useState(1);
   // const [dialogInitValue, setDialogInitValue] = useState("");
 
-  const handleDialogClose = () => {
+  function dismissVoteProfileDialog() {
     setDialogStatus((prevStatus) => ({
       ...prevStatus,
       open: false,
+      type: 1,
+      init: "",
+      values: [],
+      editable: true,
     }));
-  };
+  }
 
+  function dismissViewProfileDialog() {
+    setViewProfileDialogStatus((prevStatus) => ({
+      ...prevStatus,
+      open: false,
+      type: 1,
+      values: [],
+    }));
+  }
 
-  const refreshProfile = async (type) => {
-    getProfileList(type, user.address).then((result) => {
-      if (result.length > 0) {
-        const winner = [...result].sort((a, b) => {
-          return BigNumber(b.value).minus(a.value);
-        });
-        console.log("winner:", winner[0].key);
+  function displayViewProfileDialog(type, values) {
+    console.log("displayViewProfileDialog:", type, values);
 
-        if (type == 3) {
-          user.bio = winner[0].key;
-        } else if (type == 2) {
-          user.portrait = getImageUrl(winner[0].key);
-        } else if (type == 1) {
-          user.banner = getImageUrl(winner[0].key);
-        }
-      }
-    });
-  };
+    setViewProfileDialogStatus((prevStatus) => ({
+      ...prevStatus,
+      open: true,
+      type: type,
+      values: values,
+    }));
+  }
 
-  function displayEditProfileDialog(type, initValue) {
-    console.log("displayEditProfileDialog:", type, initValue);
+  const handleDialogClose = () => {};
+
+  function displayAddProfileDialog(type, initValue, values, editable) {
+    console.log("displayAddProfileDialog:", type, initValue, values, editable);
 
     setDialogStatus((prevStatus) => ({
       ...prevStatus,
       open: true,
       type: type,
       init: initValue,
+      values: values,
+      editable: editable,
     }));
   }
 
-  async function handleImageSelect(type, e) {
+  async function handleImageSelect(type, values, e) {
     if (e.target.files && e.target.files[0]) {
+      setIsUploading(true);
       const formData = new FormData();
       formData.append("file", e.target.files[0]);
       const response = await fetch("/api/uploadFile", {
@@ -181,24 +202,78 @@ const GhostProfile = ({ user }) => {
       });
       const data = await response.json();
       console.log("ipfshash:", data.IpfsHash);
-      displayEditProfileDialog(type, data.IpfsHash);
+      setIsUploading(false);
+      displayAddProfileDialog(
+        type,
+        { key: data.IpfsHash, value: 0 },
+        values,
+        false
+      );
+    }
+  }
+
+  function onEditBio() {
+    if (profile.address) {
+      if (profile.bios.length > 0) {
+        displayViewProfileDialog(3, profile.bios);
+      } else {
+        displayAddProfileDialog(
+          3,
+          { key: "", value: 0 },
+          profile.bios,
+          true
+        );
+      }
+    }
+  }
+
+  function onEditPortrait() {
+    if (profile.address) {
+      if (profile.portraits.length > 0) {
+        displayViewProfileDialog(1, profile.portraits);
+      } else {
+        portraitFileInputRef.current.click();
+      }
     }
   }
 
   function onEditBanner() {
-    fileInputRef.current.click();
+    if (profile.address) {
+      if (profile.banners.length > 0) {
+        displayViewProfileDialog(1, profile.banners);
+      } else {
+        bannerFileInputRef.current.click();
+      }
+    }
+  }
+
+  function getWinner(array) {
+    if (array.length > 0) {
+      return sortData(array)[0].key;
+    } else {
+      return undefined;
+    }
   }
 
   return (
     <div>
-      {/* Banner */}
-      {/* Banner */}
-      <Banner style={{ backgroundImage: `url(${user.banner})` }}>
+      <Banner
+        style={{
+          backgroundImage: `url(${getImageUrl(getWinner(profile.banners))})`,
+        }}
+      >
         <input
           type="file"
           accept="image/*"
-          onChange={(e) => handleImageSelect(1, e)}
-          ref={fileInputRef}
+          onChange={(e) => handleImageSelect(1, profile.banners, e)}
+          ref={bannerFileInputRef}
+          style={{ display: "none" }}
+        />
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => handleImageSelect(2, profile.portraits, e)}
+          ref={portraitFileInputRef}
           style={{ display: "none" }}
         />
         <EditIconButton
@@ -216,31 +291,31 @@ const GhostProfile = ({ user }) => {
         sx={{ position: "relative", marginTop: "-60px", padding: 2 }}
       >
         <Grid item>
-          <ProfileAvatar src={user.portrait}>
-            <EditIconButton className="edit-icon" size="small">
+          <ProfileAvatar src={getImageUrl(getWinner(profile.portraits))}>
+            <EditIconButton
+              className="edit-icon"
+              size="small"
+              onClick={onEditPortrait}
+            >
               <EditIcon />
             </EditIconButton>
           </ProfileAvatar>
         </Grid>
         <Grid item sx={{ flexGrow: 1, marginLeft: 2, marginTop: "50px" }}>
           <Typography variant="h5" style={{ marginBottom: "-6px" }}>
-            {user.name}
+            {profile.name || "loading..."}
           </Typography>
           <Typography variant="caption" style={{ marginBottom: "-4px" }}>
-            {user.address}
+            {profile.address || "loading..."}
           </Typography>
-          <Typography variant="body2">Holding: {user.amount} $MING</Typography>
+          <Typography variant="body2">
+            {profile.address == ""
+              ? "loading..."
+              : "Holding: " + profile.amount + " $MING"}
+          </Typography>
         </Grid>
         {/* <EditButton variant="contained">Edit profile</EditButton> */}
       </Grid>
-
-      {/* <Grid item sx={{ flexGrow: 1, marginLeft: 2 }}>
-        <Typography variant="body1">{user.name}</Typography>
-      </Grid> */}
-
-      {/* <Grid item sx={{ flexGrow: 1, marginLeft: 2 }}>
-        <Typography variant="body1">{user.bio}</Typography>
-      </Grid> */}
 
       <Grid item sx={{ flexGrow: 1, marginLeft: 2, position: "relative" }}>
         <Typography variant="h6">Bio</Typography>
@@ -249,22 +324,66 @@ const GhostProfile = ({ user }) => {
             variant="body1"
             sx={{ flexGrow: 1, flexBasis: "auto", minWidth: 0 }}
           >
-            {user.bio || "Edit Bio"}
+            {getWinner(profile.bios) || "Edit Bio"}
           </Typography>
           <EditBioIconButton
             className="edit-icon"
             size="small"
-            onClick={() => displayEditProfileDialog(3, user.bio)}
+            onClick={() => onEditBio()}
           >
             <EditIcon />
           </EditBioIconButton>
-          <EditProfileDialog
-            address={user.address}
+          <ViewProfileDialog
+            address={profile.address}
+            open={viewProfileDialogStatus.open}
+            onClose={() => {
+              dismissViewProfileDialog();
+            }}
+            onUpdate={() => refreshProfile(viewProfileDialogStatus.type)}
+            values={viewProfileDialogStatus.values}
+            type={viewProfileDialogStatus.type}
+            onVote={(item) => {
+              dismissViewProfileDialog();
+
+              displayAddProfileDialog(
+                viewProfileDialogStatus.type,
+                item,
+                viewProfileDialogStatus.values,
+                false
+              );
+            }}
+            onAdd={() => {
+              dismissViewProfileDialog();
+
+              if (viewProfileDialogStatus.type == 3) {
+                displayAddProfileDialog(
+                  viewProfileDialogStatus.type,
+                  { key: "", value: 0 },
+                  viewProfileDialogStatus.values,
+                  true
+                );
+              } else if (viewProfileDialogStatus.type == 1) {
+                bannerFileInputRef.current.click();
+              } else if (viewProfileDialogStatus.type == 2) {
+                portraitFileInputRef.current.click();
+              }
+            }}
+          />
+          <AddProfileDialog
+            address={profile.address}
             open={dialogStatus.open}
-            onClose={handleDialogClose}
+            onClose={() => {
+              dismissVoteProfileDialog();
+            }}
             onUpdate={() => refreshProfile(dialogStatus.type)}
             initValue={dialogStatus.init}
+            values={dialogStatus.values}
             type={dialogStatus.type}
+            editable={dialogStatus.editable}
+          />
+          <LoadingDialog
+            content="Uploading to IPFS. Please wait..."
+            open={uploading}
           />
         </BioBox>
       </Grid>
@@ -274,13 +393,13 @@ const GhostProfile = ({ user }) => {
         Transactions
       </Typography>
       <List sx={{ marginLeft: 2, marginRight: 2 }}>
-        {user.transactions && <Transactions data={user.transactions} />}
+        {profile.transactions && <Transactions data={profile.transactions} />}
       </List>
 
       {/* Collections */}
       <Grid container spacing={3} sx={{ p: 2, paddingTop: 3 }}>
-        {user.collections &&
-          user.collections.map((image, index) => (
+        {profile.collections &&
+          profile.collections.map((image, index) => (
             <Grid item xs={12} sm={6} md={4} key={index}>
               <img
                 src={image}
