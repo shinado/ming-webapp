@@ -133,7 +133,7 @@ const AddProfileDialog = ({
     } else if (topVoted.value == 0) {
       body = (
         <Typography variant="body1" sx={{ marginBottom: 2 }}>
-          You'll need at least 1 vote to change the profile! Learn more about{" "}
+          You&apos;ll need at least 1 vote to change the profile! Learn more about{" "}
           <Link href="#">how votes work</Link>.
         </Typography>
       );
@@ -141,7 +141,7 @@ const AddProfileDialog = ({
       const diff = getDisplayableValueFromContract(topVoted.value - initValue.value);
       body = (
         <Typography variant="body1" sx={{ marginBottom: 2 }}>
-          You'll need more than {diff} votes to change the profile! Learn more about{" "}
+          You&apos;ll need more than {diff} votes to change the profile! Learn more about{" "}
           <Link href="#">how votes work</Link>.
         </Typography>
       );
