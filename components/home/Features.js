@@ -28,7 +28,7 @@ export default function Features() {
           </h1>
         <p className="mt-10">
           <a
-            href="/hallOfFame"
+            href="/headerboard"
             className="text-xl text-white hover:text-[#DDDDDD]"
           >
             {i18next.t("home.feat.sub")}
@@ -43,7 +43,7 @@ export default function Features() {
             description={i18next.t("home.feat.card1.sub")}
             cta={
               <a
-                href="/hallOfFame"
+                href="/deaderboard"
                 className="text-xl text-white hover:text-[#DDDDDD]"
               >
                 {i18next.t("home.feat.card1.cta")}
@@ -59,16 +59,12 @@ export default function Features() {
             imageUrl="/icon_vote.png"
             cta={
               <a
-                href="/hallOfFame"
+                href="/deaderboard"
                 className="text-xl text-white hover:text-[#DDDDDD]"
               >
                 {i18next.t("home.feat.card2.cta")}
               </a>
             }
-            onCTAClicked={() => {
-              console.log("clicked");
-              window.open("/hallOfFame", "_blank");
-            }}
           />
 
           {/* Card 3 - Liquidity Pools */}
