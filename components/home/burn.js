@@ -3,7 +3,7 @@ import WalletConnect from "./walletConnect";
 import MingCoin from "../../abi/MingCoin.json";
 const abi = MingCoin.abi;
 const { ethers } = require("ethers");
-import "react-datepicker/dist/react-datepicker.css"; // Import CSS for the datepicker
+import Link from "next/link";
 import ReactPlayer from "react-player";
 import i18next from "../../app/i18n";
 import DateInput from "@/components/home/DateInput";
@@ -138,17 +138,17 @@ const Burn = forwardRef((props, ref) => {
           </p>
           <p className="text-base text-white-500">
             {i18next.t("home.burn.content.visit")}
-            <a href="/deaderboard">
+            <Link href="/deaderboard">
               {i18next.t("home.burn.content.deaderboard")}
-            </a>
+            </Link>
             , {i18next.t("home.burn.content.browse")}
-            <a href={"/history?address=" + myAddress}>
+            <Link href={"/history?address=" + myAddress}>
               {i18next.t("home.burn.content.history")}
-            </a>
+            </Link>
             , {i18next.t("home.burn.content.or")}
-            <a href="/fund">
+            <Link href="/fund">
               {i18next.t("home.burn.content.morecoins")}
-            </a>
+            </Link>
           </p>
 
           <div className="mt-8">

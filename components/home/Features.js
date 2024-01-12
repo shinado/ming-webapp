@@ -1,4 +1,5 @@
 import i18next from "../../app/i18n";
+import Link from "next/link";
 
 function FeatureCard({ title, description, imageUrl, cta, feature }) {
   return (
@@ -27,12 +28,12 @@ export default function Features() {
           {i18next.t("home.feat.title")}
           </h1>
         <p className="mt-10">
-          <a
+          <Link
             href="/headerboard"
             className="text-xl text-white hover:text-[#DDDDDD]"
           >
             {i18next.t("home.feat.sub")}
-          </a>
+          </Link>
         </p>
       </div>
 
@@ -42,12 +43,12 @@ export default function Features() {
             title={i18next.t("home.feat.card1.title")}
             description={i18next.t("home.feat.card1.sub")}
             cta={
-              <a
+              <Link
                 href="/deaderboard"
                 className="text-xl text-white hover:text-[#DDDDDD]"
               >
                 {i18next.t("home.feat.card1.cta")}
-              </a>
+              </Link>
             }
             imageUrl="/icon_burn.png"
           />
@@ -58,12 +59,12 @@ export default function Features() {
             description={i18next.t("home.feat.card2.sub")}
             imageUrl="/icon_vote.png"
             cta={
-              <a
+              <Link
                 href="/deaderboard"
                 className="text-xl text-white hover:text-[#DDDDDD]"
               >
                 {i18next.t("home.feat.card2.cta")}
-              </a>
+              </Link>
             }
           />
 
