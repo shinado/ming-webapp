@@ -91,8 +91,8 @@ const DateInput = ({ onDateChange }) => {
           class="mr-2 p-2 w-20 text-sm rounded-lg bg-gray-600 border-gray-500 placeholder-gray-400 text-white focus:ring-primary-500 focus:border-primary-500"
           // className="mr-2 w-20 p-2 border border-gray-300 rounded-md shadow-sm text-black"
         >
-          <option value="AD">A.D.</option>
-          <option value="BC">B.C.</option>
+          <option value="A.D.">A.D.</option>
+          <option value="B.C.">B.C.</option>
         </select>
       </div>
     </div>

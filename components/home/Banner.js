@@ -11,7 +11,6 @@ export default function Banner({ onBurning }) {
       >
         {/* Overlay Bar */}
         <div className="absolute top-0 left-0 right-0 bg-black text-white text-sm p-2 text-center z-10">
-          {i18next.t("home.banner.top")}
           View source code in{" "}
           <a href="https://github.com/shinado/ming-webapp">GitHub</a> and
           request to pull your code

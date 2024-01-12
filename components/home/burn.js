@@ -6,7 +6,6 @@ const { ethers } = require("ethers");
 import "react-datepicker/dist/react-datepicker.css"; // Import CSS for the datepicker
 import ReactPlayer from "react-player";
 import i18next from "../../app/i18n";
-import { Trans } from "react-i18next";
 import DateInput from "@/components/home/DateInput";
 import "../../app/globals.css";
 import LoadingText from "../LoadingText";
