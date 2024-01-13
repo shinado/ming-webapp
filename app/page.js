@@ -1,12 +1,13 @@
 "use client";
 import { useRef } from "react";
-import Burn from "./burn";
-import Ming from "./ming";
-import Decentralized from "./dec";
-import Banner from "./banner";
-import Roadmap from "./roadmap";
-import Footer from "./footer";
+import "./globals.css"; // Adjust the path to your global CSS file
+import Burn from "../components/home/burn";
+import Banner from "../components/home/Banner";
+import Roadmap from "../components/home/roadmap";
+import Footer from "../components/home/footer";
 import { StatusProvider } from "./WalletStatus"; // adjust the path as needed
+import Introduction from "@/components/home/Introduction";
+import Features from "@/components/home/Features";
 
 // pages/index.js
 export default function Home() {
@@ -20,9 +21,11 @@ export default function Home() {
   return (
     <>
       <StatusProvider>
+        {/* <Navbar /> */}
         <Banner onBurning={onBurning} />
-        <Ming />
-        <Decentralized />
+        <Introduction />
+        <Features />
+        {/* <FadeDiv ref={ref}/> */}
         <Burn ref={ref} />
         <Roadmap />
         <Footer />

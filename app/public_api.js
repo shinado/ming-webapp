@@ -1,5 +1,5 @@
 const { ethers, parseUnits } = require("ethers");
-const { abi } = require("./abi/MingCoin.json");
+const { abi } = require("../abi/MingCoin.json");
 import BigNumber from "bignumber.js";
 
 export function sortData(data) {

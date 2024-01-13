@@ -1,12 +1,8 @@
 import React from "react";
-import {
-  Grid,
-  Card,
-  CardMedia,
-  CardContent,
-  Button,
-  Typography,
-} from "@mui/material";
+
+import { Card, Button } from "flowbite-react";
+import Image from "next/image";
+
 import {
   getDisplayableValueFromContract,
   getImageUrl,
@@ -24,37 +20,33 @@ export default function ImageVotings(props) {
   };
 
   return (
-    <Grid container spacing={2}>
+    //help me to make cards flow and add spacing to each other
+    <div
+      style={{
+        display: "flex",
+        flexWrap: "wrap",
+        gap: "20px", // Adjust the spacing as needed
+        justifyContent: "left", // Center the cards
+      }}
+    >
       {sortedArray.map((item, index) => (
-        <Grid item xs={12} sm={6} md={4} key={index}>
-          <Card>
-            <CardMedia
-              component="img"
-              height="140"
-              image={getImageUrl(item.key)}
-              alt="Image"
-            />
-            <CardContent style={{ position: "relative" }}>
-              <Typography variant="body2" color="text.secondary">
-                Votes: {getDisplayableValueFromContract(item.value)}
-              </Typography>
-              <Button
-                variant="contained"
-                color="primary"
-                style={{
-                  position: "absolute",
-                  right: 10,
-                  bottom: 10,
-                  backgroundColor: "blue",
-                }}
-                onClick={() => handleVote(item)}
-              >
-                Vote
-              </Button>
-            </CardContent>
-          </Card>
-        </Grid>
+        <Card
+          key={index}
+          style={{
+            flex: "0 1 calc(33% - 20px)", // Adjust the width as needed
+            maxWidth: "300px", // You can also set a max-width for each card
+          }}
+          className="max-w-sm"
+          imgSrc={getImageUrl(item.key)}
+        >
+          <div className="flex items-center justify-between">
+            <p className="font-normal text-gray-700 dark:text-gray-400">
+              Votes: {getDisplayableValueFromContract(item.value)}
+            </p>
+            <Button onClick={handleVote}>Vote</Button>
+          </div>
+        </Card>
       ))}
-    </Grid>
+    </div>
   );
 }

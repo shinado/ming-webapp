@@ -1,7 +1,7 @@
 // pages/api/tokenTransfers.js
 import Web3 from "web3";
 import BigNumber from "bignumber.js";
-const { abi } = require("../../app/abi/MingCoin.json");
+const { abi } = require("../../abi/MingCoin.json");
 
 const web3 = new Web3(process.env.INFURA_URL);
 

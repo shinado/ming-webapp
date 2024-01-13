@@ -1,17 +1,19 @@
-import React from 'react';
-import { Dialog, CircularProgress, DialogContent, Typography } from '@mui/material';
+import React from "react";
+
+import { Spinner, Modal } from "flowbite-react";
 
 const LoadingDialog = ({ content, open }) => {
-    return (
-        <Dialog open={open}>
-            <DialogContent style={{ textAlign: 'center', padding: '20px' }}>
-                <CircularProgress />
-                <Typography variant="h6" style={{ marginTop: '20px' }}>
-                    {content}
-                </Typography>
-            </DialogContent>
-        </Dialog>
-    );
+  return (
+    <Modal show={open} size="md" popup>
+      <Modal.Header />
+      <Modal.Body>
+        <div className="text-center">
+          <Spinner />
+          <div>{content}</div>
+        </div>
+      </Modal.Body>
+    </Modal>
+  );
 };
 
 export default LoadingDialog;

@@ -33,8 +33,11 @@ export default function History() {
   }, [isReady, address]);
 
   return (
-    <div>
-      <Transactions data={transactions} />
+    <div className="App flex mt-10 items-left min-h-screen">
+      <div className="container mx-auto px-4">
+        <h1 className="text-5xl font-bold text-left my-6">Transactions</h1>
+        <Transactions data={transactions} />
+      </div>
     </div>
   );
 }

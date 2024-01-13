@@ -1,16 +1,28 @@
 import React, { useEffect, useState } from "react";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import Link from "@mui/material/Link";
+
 import TextVotings from "./TextVotings";
 import ImageVotings from "./ImageVotings";
 
-const { abi } = require("../../app/abi/MingCoin.json");
+import {
+  Card,
+  Button,
+  Label,
+  Modal,
+  TextInput,
+  Textarea,
+} from "flowbite-react";
+import Image from "next/image";
+
+const { abi } = require("../../abi/MingCoin.json");
 const { ethers } = require("ethers");
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import i18next from "../../app/i18n";
+
+const darkTheme = createTheme({
+  palette: {
+    mode: "dark",
+  },
+});
 
 const ViewProfileDialog = ({
   address,
@@ -24,16 +36,16 @@ const ViewProfileDialog = ({
 }) => {
   const contents = {
     1: {
-      title: "Edit Banner",
-      label: "IPFS CID",
+      title: i18next.t("dialog.edit.banner"),
+      label: "",
     },
     2: {
-      title: "Edit Portrait",
-      label: "IPFS CID",
+      title: i18next.t("dialog.edit.avatar"),
+      label: "",
     },
     3: {
-      title: "Edit Bio",
-      label: "Bio",
+      title: i18next.t("dialog.edit.bio"),
+      label: i18next.t("profile.page.bio"),
     },
   }[type];
 
@@ -41,43 +53,38 @@ const ViewProfileDialog = ({
   if (type == 1) {
     desc =
       values.length == 0 ? (
-        <Typography variant="body1" sx={{ marginBottom: 2 }}>
+        <div variant="body1" sx={{ marginBottom: 2 }}>
           Upload a profile for banner.
-        </Typography>
+        </div>
       ) : (
-        <Typography variant="body1" sx={{ marginBottom: 2 }}>
-          Anyone with $MING is able to vote for the profile. The one with most votes will be displayed on the profile page.
-          You can vote for an existing banner or{" "}
-          <Link onClick={onAdd}>add a new one</Link>. Learn more about{" "}
-          <Link href="#">how votes work</Link>.
-        </Typography>
+        <div variant="body1" sx={{ marginBottom: 2 }}>
+          {i18next.t("dialog.edit.profile.body") + " "}
+          <a href="#">{i18next.t("dialog.how.votes.work")}</a>.
+        </div>
       );
   } else if (type == 2) {
     desc =
       values.length == 0 ? (
-        <Typography variant="body1" sx={{ marginBottom: 2 }}>
-          Upload a profile for portrait.
-        </Typography>
+        <div variant="body1" sx={{ marginBottom: 2 }}>
+          Upload a profile for avatar.
+        </div>
       ) : (
-        <Typography variant="body1" sx={{ marginBottom: 2 }}>
-          Anyone with $MING is able to vote for the profile. The one with most votes will be displayed on the profile page.
-          You can vote for an existing portrait or{" "}
-          <Link onClick={onAdd}>add a new one</Link>. Learn more about{" "}
-          <Link href="#">how votes work</Link>.
-        </Typography>
+        <div variant="body1" sx={{ marginBottom: 2 }}>
+          {i18next.t("dialog.edit.profile.body") + " "}
+          <a href="#">{i18next.t("dialog.how.votes.work")}</a>.
+        </div>
       );
   } else if (type == 3) {
     desc =
       values.length == 0 ? (
-        <Typography variant="body1" sx={{ marginBottom: 2 }}>
+        <div variant="body1" sx={{ marginBottom: 2 }}>
           Add a bio.
-        </Typography>
+        </div>
       ) : (
-        <Typography variant="body1" sx={{ marginBottom: 2 }}>
-          Anyone with $MING is able to vote for the bio. The one with most votes will be displayed on the profile page.
-          You can vote for an existing bio or <Link href="">add a new one</Link>
-          . Learn more about <Link href="#">how votes work</Link>.
-        </Typography>
+        <div variant="body1" sx={{ marginBottom: 2 }}>
+          {i18next.t("dialog.edit.profile.body") + " "}
+          <a href="#">{i18next.t("dialog.how.votes.work")}</a>.
+        </div>
       );
   }
 
@@ -137,31 +144,42 @@ const ViewProfileDialog = ({
   };
 
   return (
-    <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
-      <DialogTitle>{contents.title}</DialogTitle>
-      <DialogContent>
-        {desc}
-        {type == 3 ? (
-          <TextVotings
-            data={values}
-            onVote={(item) => {
-              onVote(item);
-            }}
-          />
-        ) : (
-          <ImageVotings
-            data={values}
-            onVote={(item) => {
-              onVote(item);
-            }}
-          />
-        )}
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose}>Cancel</Button>
-        <Button onClick={onAdd}>Add</Button>
-      </DialogActions>
-    </Dialog>
+    <Modal
+      onClose={handleClose}
+      show={open}
+      size="6xl"
+      popup
+      className="dark:bg-black"
+    >
+      <Modal.Header />
+      <Modal.Body>
+        <div className="space-y-6">
+          <h3 className="text-xl font-medium text-gray-900 dark:text-white">
+            {contents.title}
+          </h3>
+          <div>{desc}</div>
+          {type == 3 ? (
+            <TextVotings
+              data={values}
+              onVote={(item) => {
+                onVote(item);
+              }}
+            />
+          ) : (
+            <ImageVotings
+              data={values}
+              onVote={(item) => {
+                onVote(item);
+              }}
+            />
+          )}
+
+          <div className="w-full">
+            <Button onClick={onAdd}>Add</Button>
+          </div>
+        </div>
+      </Modal.Body>
+    </Modal>
   );
 };
 

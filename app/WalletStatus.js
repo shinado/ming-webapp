@@ -1,7 +1,6 @@
 import React, { createContext, useState, useContext } from "react";
 import { getBalanceOfMing } from "./public_api";
-const { ethers } = require("ethers");
-const { abi } = require("./abi/MingCoin.json");
+import firebase from "./firebase";
 
 const WalletStatus = createContext({
   status: { address: "", balance: "" },
@@ -97,7 +96,9 @@ export const StatusProvider = ({ children }) => {
   };
 
   const connectWallet = async () => {
+    // firebase.analytics().logEvent("connect_wallet_click");
     setConnecting(true);
+
     if (typeof window.ethereum !== "undefined") {
       try {
         // Request account access

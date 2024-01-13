@@ -1,33 +1,17 @@
 import React, { useEffect, useState } from "react";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import Link from "@mui/material/Link";
-import Paper from "@mui/material/Paper";
-import Avatar from "@mui/material/Avatar";
-import { styled } from "@mui/system";
-import { getContractValueFromDisplayable, getDisplayableValueFromContract, getImageUrl } from "@/app/public_api";
+
+import { Button, Label, Modal, TextInput, Textarea } from "flowbite-react";
+
+import {
+  getContractValueFromDisplayable,
+  getDisplayableValueFromContract,
+  getImageUrl,
+} from "@/app/public_api";
 import BigNumber from "bignumber.js";
 
-const { abi } = require("../../app/abi/MingCoin.json");
+const { abi } = require("../../abi/MingCoin.json");
 const { ethers } = require("ethers");
-
-const Banner = styled(Paper)({
-  position: "relative",
-  height: 250,
-  backgroundSize: "cover",
-  backgroundPosition: "center",
-});
-
-const Portrait = styled(Avatar)({
-  width: 240,
-  height: 240,
-  border: "3px solid white",
-});
+import i18next from "../../app/i18n";
 
 const AddProfileDialog = ({
   address,
@@ -50,7 +34,7 @@ const AddProfileDialog = ({
   //only used for bio
   useEffect(() => {
     setValue(initValue.key);
-    if(contains) setVotingEnabled(true); 
+    if (contains) setVotingEnabled(true);
   }, [initValue]);
 
   let contents;
@@ -61,89 +45,95 @@ const AddProfileDialog = ({
   if (values.length == 0) {
     contents = {
       1: {
-        title: "Add Banner",
-        label: "IPFS CID",
+        title: i18next.t("dialog.add.banner"),
+        label: "",
       },
       2: {
-        title: "Add Avatar",
-        label: "IPFS CID",
+        title: i18next.t("dialog.add.avatar"),
+        label: "",
       },
       3: {
-        title: "Add Bio",
-        label: "Bio",
+        title: i18next.t("dialog.add.bio"),
+        label: i18next.t("profile.page.bio"),
       },
     }[type];
     button = "Add";
     buttoning = "Adding";
 
     body = (
-      <Typography variant="body1" sx={{ marginBottom: 2 }}>
-        You are the first one to edit the profile! Learn more about{" "}
-        <Link href="#">how votes work</Link>.
-      </Typography>
+      <div variant="body1" sx={{ marginBottom: 2 }}>
+        {i18next.t("dialog.edit.profile.first") + " "}
+        <a href="#">{i18next.t("dialog.how.votes.work")}</a>.
+      </div>
     );
   } else {
     if (contains) {
       contents = {
         1: {
-          title: "Vote Banner",
-          label: "IPFS CID",
+          title: i18next.t("dialog.vote.banner"),
+          label: "",
         },
         2: {
-          title: "Vote Avatar",
-          label: "IPFS CID",
+          title: i18next.t("dialog.vote.avatar"),
+          label: "",
         },
         3: {
-          title: "Vote Bio",
-          label: "Bio",
+          title: i18next.t("dialog.vote.bio"),
+          label: i18next.t("profile.page.bio"),
         },
       }[type];
-      button = "Vote";
-      buttoning = "Voting";
+      button = i18next.t("dialog.vote.button");
+      buttoning = i18next.t("dialog.vote.buttoning");
     } else {
       contents = {
         1: {
-          title: "Add Banner",
-          label: "IPFS CID",
+          title: i18next.t("dialog.add.banner"),
+          label: "",
         },
         2: {
-          title: "Add Avatar",
-          label: "IPFS CID",
+          title: i18next.t("dialog.add.avatar"),
+          label: "",
         },
         3: {
+          title: i18next.t("dialog.add.bio"),
           title: "Add Bio",
-          label: "Bio",
+          label: i18next.t("profile.page.bio"),
         },
       }[type];
-      button = "Add";
-      buttoning = "Adding";
+      button = i18next.t("dialog.add.button");
+      buttoning = i18next.t("dialog.add.buttoning");
     }
 
     const topVoted = [...values].sort((a, b) => {
       return BigNumber(b.value).minus(a.value);
     })[0];
 
+    console.log("topVoted", topVoted.value);
+    console.log("initValue", initValue.value);
+
     if (topVoted.key == initValue.key) {
       body = (
-        <Typography variant="body1" sx={{ marginBottom: 2 }}>
-          This profile is already on top. Learn more about{" "}
-          <Link href="#">how votes work</Link>.
-        </Typography>
+        <div variant="body1" sx={{ marginBottom: 2 }}>
+          {i18next.t("dialog.edit.profile.ontop") + " "}
+          <a href="#">{i18next.t("dialog.how.votes.work")}</a>.
+        </div>
       );
     } else if (topVoted.value == 0) {
       body = (
-        <Typography variant="body1" sx={{ marginBottom: 2 }}>
-          You&apos;ll need at least 1 vote to change the profile! Learn more about{" "}
-          <Link href="#">how votes work</Link>.
-        </Typography>
+        <div variant="body1" sx={{ marginBottom: 2 }}>
+          {i18next.t("dialog.edit.profile.morethan").replace("{diff}", 1) + " "}
+          <a href="#">{i18next.t("dialog.how.votes.work")}</a>.
+        </div>
       );
     } else if (topVoted.value > initValue.value) {
-      const diff = getDisplayableValueFromContract(topVoted.value - initValue.value);
+      const diff =
+        getDisplayableValueFromContract(topVoted.value) -
+        getDisplayableValueFromContract(initValue.value);
       body = (
-        <Typography variant="body1" sx={{ marginBottom: 2 }}>
-          You&apos;ll need more than {diff} votes to change the profile! Learn more about{" "}
-          <Link href="#">how votes work</Link>.
-        </Typography>
+        <div variant="body1" sx={{ marginBottom: 2 }}>
+          {i18next.t("dialog.edit.profile.morethan").replace("{diff}", diff) + " "}
+          <a href="#">{i18next.t("dialog.how.votes.work")}</a>.
+        </div>
       );
     }
   }
@@ -209,61 +199,67 @@ const AddProfileDialog = ({
   };
 
   return (
-    <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
-      <DialogTitle>{contents.title}</DialogTitle>
-      <DialogContent>
-        {body}
+    <Modal onClose={handleClose} show={open} size="4xl" popup>
+      <Modal.Header />
+      <Modal.Body>
+        <div className="space-y-6">
+          <h3 className="text-xl font-medium text-gray-900 dark:text-white">
+            {contents.title}
+          </h3>
+          <div>{body}</div>
 
-        {type == 3 ? (
-          editable ? (
-            <TextField
-              autoFocus
-              margin="dense"
-              id="profile"
-              label={contents.label}
-              type="text"
-              fullWidth
-              variant="standard"
-              value={value}
-              onChange={handleValueChange}
-            />
+          {type == 3 ? (
+            editable ? (
+              <div>
+                <div class="text-base font-bold">{contents.label}</div>
+                <Textarea
+                  autoFocus
+                  margin="dense"
+                  id="profile"
+                  label={contents.label}
+                  type="text"
+                  fullWidth
+                  value={value}
+                  onChange={handleValueChange}
+                />
+              </div>
+            ) : (
+              <h3 className="text-xl font-medium text-gray-900 dark:text-white">
+                {value}
+              </h3>
+            )
+          ) : type == 1 ? (
+            <img class="h-300 max-w-full" src={getImageUrl(value)} />
           ) : (
-            <Typography variant="body2" sx={{ marginBottom: 2 }}>
-              {value}
-            </Typography>
-          )
-        ) : type == 1 ? (
-          <Banner
-            style={{
-              backgroundImage: `url(${getImageUrl(value)})`,
-            }}
-          />
-        ) : (
-          <Portrait src={getImageUrl(value)} />
-        )}
+            <img class="h-300 max-w-full" src={getImageUrl(value)} />
+          )}
 
-        {isVotingEnabled ? (
-          <TextField
-            margin="dense"
-            id="amount"
-            label="Votes"
-            type="number"
-            fullWidth
-            variant="standard"
-            value={amount}
-            onChange={handleAmountChange}
-          />
-        ) : (
-          <Button onClick={addVotes}>Add Votes</Button>
-        )}
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose}>Cancel</Button>
-        <Button onClick={handleSave} disabled={loading}>
-          {loading ? buttoning : button}
-        </Button>
-      </DialogActions>
-    </Dialog>
+          {isVotingEnabled ? (
+            <div>
+              <div class="text-base font-bold">Votes</div>
+              <TextInput
+                id="amount"
+                type="number"
+                placeholder="44444"
+                value={amount}
+                onChange={(event) => setAmount(event.target.value)}
+                required
+              />
+            </div>
+          ) : (
+            <div class="text-blue-500  cursor-pointer" onClick={addVotes}>
+              {i18next.t("dialog.add.votes")}
+            </div>
+          )}
+
+          <div className="w-full">
+            <Button onClick={handleSave} disabled={loading}>
+              {loading ? buttoning : button}
+            </Button>
+          </div>
+        </div>
+      </Modal.Body>
+    </Modal>
   );
 };
 

@@ -2,13 +2,10 @@
 import React from "react";
 import "../../app/globals.css"; // Adjust the path to your global CSS file
 import { useRouter } from "next/router";
-import GhostProfile from "../../components/profile/GhostProfile";
 import { useEffect, useState } from "react";
-import {
-  getBaseProfile,
-  getProfileList,
-} from "../../app/public_api";
+import { getBaseProfile, getProfileList } from "../../app/public_api";
 import BigNumber from "bignumber.js";
+import ProfileCard from "@/components/profile/Profile";
 
 async function getTransactions(address) {
   try {
@@ -84,30 +81,65 @@ export default function Profile() {
   }, [isReady, address]); // Ensure the useEffect runs again if the address changes
 
   const refreshProfile = async (type) => {
-    getProfileList(type, profile.address).then((result) => {
-      if (type == 3) {
-        setProfile((prevProfile) => ({
-          ...prevProfile,
-          bios: result,
-        }));
-      } else if (type == 2) {
-        setProfile((prevProfile) => ({
-          ...prevProfile,
-          portraits: result,
-        }));
-      } else if (type == 1) {
-        setProfile((prevProfile) => ({
-          ...prevProfile,
-          banners: result,
-        }));
-      }
-    });
+    if (type == 4) {
+      Promise.all([
+        getBaseProfile(address),
+        getTransactions(address),
+      ])
+        .then(
+          ([
+            baseProfileResult,
+            transactionsResult,
+          ]) => {
+            // Update the profile state only once with all the new values
+            setProfile((prevProfile) => ({
+              ...prevProfile,
+              amount: BigNumber(baseProfileResult.amount)
+                .dividedBy(1e18)
+                .toString(),
+              transactions: transactionsResult,
+            }));
+          }
+        )
+        .catch((error) => {
+          // Handle any errors that occur during the fetch
+          console.error("Error fetching data:", error);
+        });
+    } else {
+      getProfileList(type, profile.address).then((result) => {
+        if (type == 3) {
+          setProfile((prevProfile) => ({
+            ...prevProfile,
+            bios: result,
+          }));
+        } else if (type == 2) {
+          setProfile((prevProfile) => ({
+            ...prevProfile,
+            portraits: result,
+          }));
+        } else if (type == 1) {
+          setProfile((prevProfile) => ({
+            ...prevProfile,
+            banners: result,
+          }));
+        }
+      });
+    }
   };
 
   return (
     <div>
-      {/* how do I receive type? */}
-      <GhostProfile profile={profile} refreshProfile={refreshProfile} />
+      {/* <ProfileCard profile={
+        {
+          name: "George Washington",
+          address: "0x1234567890123456789012345678901234567890",
+          imageUrl: "/banner.png",
+          avatarUrl: "/usd.webp",
+          bio: "bakafjwejrjierhiew ehrj",
+          wealth: 444,
+        }
+      } /> */}
+      <ProfileCard profile={profile} refreshProfile={refreshProfile} />
     </div>
   );
 }

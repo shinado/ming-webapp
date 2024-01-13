@@ -82,3 +82,32 @@ td, th {
   text-align: left;
   font-size: 14px; /* Set a smaller font size, adjust as needed */
 }
+
+.fadeIn {
+  opacity: 1;
+  transition: opacity 4s ease-in;
+}
+
+.fadeOut {
+  opacity: 0;
+  transition: opacity 4s ease-out;
+}
+
+.fadeInOut {
+  animation: fadeInOut 4s ease-in-out;
+}
+
+@keyframes fadeInOut {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 1s;
+}

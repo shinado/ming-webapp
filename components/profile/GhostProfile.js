@@ -18,12 +18,22 @@ import AddProfileDialog from "./AddProfileDialog";
 import { getImageUrl, sortData } from "../../app/public_api";
 import ViewProfileDialog from "./ViewProfileDialog";
 import LoadingDialog from "./LoadingDialog";
+import BurningDialog from "./BurningDialog";
+
+const BurnButton = styled(Button)({
+  backgroundColor: "red",
+  color: "white",
+  "&:hover": {
+    backgroundColor: "darkRed",
+  },
+});
 
 const Banner = styled(Paper)({
   position: "relative",
   height: 300,
   backgroundSize: "cover",
   backgroundPosition: "center",
+  backgroundColor: "black",
   overflow: "hidden", // Ensure the pseudo-element doesn't overflow the banner boundaries
   "&:hover": {
     "&::before": {
@@ -126,6 +136,7 @@ const GhostProfile = ({ profile, refreshProfile }) => {
   const bannerFileInputRef = useRef(null);
   const portraitFileInputRef = useRef(null);
   const [uploading, setIsUploading] = useState(false);
+  const [isBurningDialogOpen, setIsBurningDialogOpen] = useState(false);
 
   const [viewProfileDialogStatus, setViewProfileDialogStatus] = useState({
     open: false,
@@ -217,12 +228,7 @@ const GhostProfile = ({ profile, refreshProfile }) => {
       if (profile.bios.length > 0) {
         displayViewProfileDialog(3, profile.bios);
       } else {
-        displayAddProfileDialog(
-          3,
-          { key: "", value: 0 },
-          profile.bios,
-          true
-        );
+        displayAddProfileDialog(3, { key: "", value: 0 }, profile.bios, true);
       }
     }
   }
@@ -255,11 +261,19 @@ const GhostProfile = ({ profile, refreshProfile }) => {
     }
   }
 
+  function getImageWithPlaceHolder(array, placeholder) {
+    const url = getImageUrl(getWinner(array));
+    return url ? url : placeholder;
+  }
+
   return (
     <div>
       <Banner
         style={{
-          backgroundImage: `url(${getImageUrl(getWinner(profile.banners))})`,
+          backgroundImage: `url(${getImageWithPlaceHolder(
+            profile.banners,
+            "/banner.png"
+          )})`,
         }}
       >
         <input
@@ -288,10 +302,12 @@ const GhostProfile = ({ profile, refreshProfile }) => {
       {/* User Info */}
       <Grid
         container
-        sx={{ position: "relative", marginTop: "-60px", padding: 2 }}
+        sx={{ position: "relative", marginTop: "-75px", padding: 2 }}
       >
         <Grid item>
-          <ProfileAvatar src={getImageUrl(getWinner(profile.portraits))}>
+          <ProfileAvatar
+            src={getImageWithPlaceHolder(profile.portraits, "/banner.png")}
+          >
             <EditIconButton
               className="edit-icon"
               size="small"
@@ -301,30 +317,55 @@ const GhostProfile = ({ profile, refreshProfile }) => {
             </EditIconButton>
           </ProfileAvatar>
         </Grid>
-        <Grid item sx={{ flexGrow: 1, marginLeft: 2, marginTop: "50px" }}>
-          <Typography variant="h5" style={{ marginBottom: "-6px" }}>
-            {profile.name || "loading..."}
+        <Grid item sx={{ flexGrow: 1, marginLeft: 2, marginTop: "65px" }}>
+          <Typography variant="h5">
+            {profile.name || "loading profile..."}
           </Typography>
-          <Typography variant="caption" style={{ marginBottom: "-4px" }}>
-            {profile.address || "loading..."}
-          </Typography>
+
           <Typography variant="body2">
-            {profile.address == ""
-              ? "loading..."
-              : "Holding: " + profile.amount + " $MING"}
+            {profile.address || "loading address..."}
           </Typography>
         </Grid>
         {/* <EditButton variant="contained">Edit profile</EditButton> */}
       </Grid>
 
       <Grid item sx={{ flexGrow: 1, marginLeft: 2, position: "relative" }}>
-        <Typography variant="h6">Bio</Typography>
+        <Grid container sx={{ position: "relative" }}>
+          <Grid item>
+            <Typography variant="subtitle2">Wealth</Typography>
+            <Typography variant="body2" sx={{ flexGrow: 1, flexBasis: "auto" }}>
+              {profile.amount == ""
+                ? "loading assets..."
+                : profile.amount + " $MING"}
+            </Typography>
+          </Grid>
+          <Grid item>
+            {profile.name && (
+              <Button
+                variant="contained"
+                style={{ backgroundColor: "red" }}
+                sx={{ marginLeft: 4 }}
+                onClick={() => {
+                  setIsBurningDialogOpen(true);
+                }}
+              >
+                Burn $MING
+              </Button>
+            )}
+          </Grid>
+        </Grid>
+
+        <Typography variant="subtitle2" sx={{ marginTop: 4 }}>
+          Bio
+        </Typography>
         <BioBox>
           <Typography
-            variant="body1"
+            variant="body2"
             sx={{ flexGrow: 1, flexBasis: "auto", minWidth: 0 }}
           >
-            {getWinner(profile.bios) || "Edit Bio"}
+            {profile.address == ""
+              ? "loading bio"
+              : getWinner(profile.bios) || "Edit Bio"}
           </Typography>
           <EditBioIconButton
             className="edit-icon"
@@ -384,6 +425,11 @@ const GhostProfile = ({ profile, refreshProfile }) => {
           <LoadingDialog
             content="Uploading to IPFS. Please wait..."
             open={uploading}
+          />
+          <BurningDialog
+            address={profile.address}
+            openModal={isBurningDialogOpen}
+            onModalClose={(status) => setIsBurningDialogOpen(false)}
           />
         </BioBox>
       </Grid>
