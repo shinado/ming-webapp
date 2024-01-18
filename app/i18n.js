@@ -8,21 +8,30 @@ import { initReactI18next } from "react-i18next";
 const resources = {
   en: {
     translation: {
+      "global.or": "or",
+      "global.burn": "Burn $MING",
+
       "home.banner.top": "Ming Coin",
       "home.banner.title": "Ming Coin",
-      "home.banner.sub": "Burn $MING as an offering to ancestors, spirits, or deities. ",
+      "home.banner.sub":
+        "Burn $MING as an offering to ancestors, spirits, or deities. ",
       "home.banner.hint": "*Now on testnet",
 
       "home.intro.title": "The Crypto in Afterlife.",
-      "home.intro.sub": "The first-ever crypto used in afterlife. Burn $MING as an offering to ancestors, spirits, deities, or even your favorite celebrity.",
+      "home.intro.sub":
+        "The first-ever crypto used in afterlife. Burn $MING as an offering to ancestors, spirits, deities, or even your favorite celebrity.",
       "home.intro.card1.title": "Spirit Money",
-      "home.intro.card1.sub": "Burn $MING as an offering to ancestors, spirits, or deities, ensuring that the spirits of the deceased have ample funds and are well taken care of in the afterlife.",
+      "home.intro.card1.sub":
+        "Burn $MING as an offering to ancestors, spirits, or deities, ensuring that the spirits of the deceased have ample funds and are well taken care of in the afterlife.",
       "home.intro.card2.title": "#BUNR not #HODL",
-      "home.intro.card2.sub": "The amount of $MING is at a fixed supply of 444,444,444,444,444. The more $MING you burn, the less $MING there is in circulation.",
+      "home.intro.card2.sub":
+        "The amount of $MING is at a fixed supply of 444,444,444,444,444. The more $MING you burn, the less $MING there is in circulation.",
       "home.intro.card3.title": "Fair Launch",
-      "home.intro.card3.sub": "All $MINGs are distributed through a fair launch process, ensuring complete transparency and fairness. No pre-mining or reserved allocations.",
+      "home.intro.card3.sub":
+        "All $MINGs are distributed through a fair launch process, ensuring complete transparency and fairness. No pre-mining or reserved allocations.",
       "home.intro.card4.title": "Environmental Friendly",
-      "home.intro.card4.sub": "Burn $MING instead of real papers. Less carbon footprint, more trees.",
+      "home.intro.card4.sub":
+        "Burn $MING instead of real papers. Less carbon footprint, more trees.",
 
       "home.feat.title": "Beyond memecoins.",
       "home.feat.sub": "Read whitepaper →",
@@ -36,19 +45,24 @@ const resources = {
       "home.feat.card3.sub": "Burn NFTs to spirits.",
       "home.feat.card3.feat": "Coming soon",
       "home.feat.card4.title": "Lands",
-      "home.feat.card4.sub": "Buy and sell lands for your ancestors to live in.",
+      "home.feat.card4.sub":
+        "Buy and sell lands for your ancestors to live in.",
       "home.feat.card4.feat": "Coming soon",
       "home.feat.card5.title": "Staking",
-      "home.feat.card5.sub": "Stake $MING to govern. You decide the future of $MING.",
+      "home.feat.card5.sub":
+        "Stake $MING to govern. You decide the future of $MING.",
       "home.feat.card5.feat": "Coming soon",
 
       "home.burn.title": "Burn $MING",
-      "home.burn.sub": "Burn $MING to your ancestors for blessing, or a past-away celebrity.",
-      "home.burn.content": "Visit <a href=''>Deaderboard</>, browse my burning history, or get more $MING.",
+      "home.burn.sub":
+        "Burn $MING to your ancestors for blessing, or a past-away celebrity.",
       "home.burn.content.visit": "Visit ",
-      "home.burn.content.deaderboard": "<a href=''>Deaderboard</>, browse ",
-      "home.burn.content.history": "<a>my burning history</a>, or .",
-      "home.burn.content.morecoins": "<a>get more $MING</a>.",
+      "home.burn.content.deaderboard": "Deaderboard",
+      "home.burn.content.browse": "Browse ",
+      "home.burn.content.history": "burning history",
+      "home.burn.content.or": "or ",
+      "home.burn.content.morecoins": "get more $MING",
+
 
       "home.burn.form.name": "Recipient",
       "home.burn.form.name.hint": "George Washington",
@@ -60,7 +74,7 @@ const resources = {
       "home.roadmap.p1.title": "Testnet phase.1",
       "home.roadmap.p1.sub": "Released on testnet.",
       "home.roadmap.p2.title": "Testnet phase.2",
-      "home.roadmap.p2.sub": "Funding. ",
+      "home.roadmap.p2.sub": "Batch mint",
       "home.roadmap.p3.title": "Testnet phase.3",
       "home.roadmap.p3.sub": "De Shop, Lands, and Staking.",
       "home.roadmap.p4.title": "Mainnet",
@@ -87,10 +101,14 @@ const resources = {
       "dialog.edit.banner": "Edit Banner",
       "dialog.edit.avatar": "Edit Avatar",
       "dialog.edit.bio": "Edit Bio",
-      "dialog.edit.profile.first": "You are the first one to edit the profile! Learn more about ",
-      "dialog.edit.profile.morethan": "You'll need more than {diff} votes to change the profile! Learn more about ",
-      "dialog.edit.profile.ontop": "This profile is already on top. Learn more about ",
-      "dialog.edit.profile.body": "Anyone with $MING is able to vote for the profile. The one with most votes will be displayed on the profile page. You can vote for an existing banner or add a new one. Learn more about ",
+      "dialog.edit.profile.first":
+        "You are the first one to edit the profile! Learn more about ",
+      "dialog.edit.profile.morethan":
+        "You'll need more than {diff} votes to change the profile! Learn more about ",
+      "dialog.edit.profile.ontop":
+        "This profile is already on top. Learn more about ",
+      "dialog.edit.profile.body":
+        "Anyone with $MING is able to vote for the profile. The one with most votes will be displayed on the profile page. You can vote for an existing banner or add a new one. Learn more about ",
       "dialog.how.votes.work": "how votes work.",
 
       "dialog.vote.button": "Vote",
@@ -103,28 +121,55 @@ const resources = {
 
       "funding.title1": "Initiat $MING",
       "funding.title2": "With a fair launch",
-      "funding.body": "We set the initiatial $MING price at 1 ETH = 2,222,222,222,222 $MING, aiming to raise 100 ETH. After it reaches the funding goal, all fundswill be sent to Uniswap, along with the other half of $MING to provide liquidity. For more information, please ",
+      "funding.body":
+        "We set the initiatial $MING price at 1 ETH = xxx $MING. After it reaches the funding goal, all fundswill be sent to Uniswap, along with the other half of $MING to provide liquidity. For more information, please ",
       "funding.readwhitepaper": "Read the whitepaper",
+      "funding.viewcontract": "View the contract",
       "funding.raised": "We've raised: ",
-    }
+      "funding.receive": "You'll receive: ",
+      "funding.fund": "Fund",
+      "funding.funding": "Funding...",
+
+      "freemint.title1": "Initiat $MING",
+      "freemint.title2": "With free mint",
+      "freemint.body":
+        "All $MING tokens are distributed via fair launch. You can get 444,444.444444 $MING(of total 444,444,444,444) for each free mint. For more information, please ",
+      "freemint.readwhitepaper": "Read the whitepaper",
+      "freemint.viewcontract": "View the contract",
+      "freemint.mint": "Mint",
+      "freemint.minting": "Minting...",
+      "freemint.balance": "Total amount minted: ",
+      "freemint.mybalance": "My balance: ",
+
+      "burning.loading.1": "Generating ghost address...",
+      "burning.loading.2": "Burning to ghost address...",
+      "burning.loading.3": "Waiting for Bank of Hell to comfirm...",
+      "burning.loading.4": "Bank of Hell returns OK...",
+      "burning.loading.5": "Waiting for transaction to complete...",
+    },
   },
   zh: {
     translation: {
+      "global.or": "或者",
+      "global.burn": "燃烧$MING",
+
       "home.banner.title": "Ming Coin",
       "home.banner.sub": "区块链冥币，构建低通胀和谐地府",
       "home.banner.hint": "*已经部署至测试网",
 
       "home.intro.title": "区块链冥币",
-      "home.intro.sub": "$Ming作为以太坊生态中的重要公共物品, 致力于构建低通胀的和谐地府",
+      "home.intro.sub":
+        "$Ming作为以太坊生态中的重要公共物品，致力于构建低通胀的和谐地府",
       "home.intro.card1.title": "冥币",
       "home.intro.card1.sub": "解决地府恶性通胀问题，让亡者在地府生活更加富足",
-      "home.intro.card2.title": "#BUNR, 不要#HODL",
-      "home.intro.card2.sub": "$MING的发行量固定为444,444,444,444,444. 烧得越多，通缩越大，价格越高",
+      "home.intro.card2.title": "#BUNR，不要#HODL",
+      "home.intro.card2.sub":
+        "$MING的发行量固定为444,444,444,444,444. 烧得越多，通缩越大，价格越高",
       "home.intro.card3.title": "公平发射",
-      "home.intro.card3.sub": "没有项目方, 只有贡献者, 没有任何预留。贡献者可以通过基金会领取grant",
+      "home.intro.card3.sub":
+        "没有项目方，只有贡献者，没有任何预留。贡献者可以通过基金会领取grant",
       "home.intro.card4.title": "环境友好",
-      "home.intro.card4.sub": "今年清明不烧纸, 烧纸得看合约地址",
-
+      "home.intro.card4.sub": "今年清明不烧纸，烧纸得看合约地址",
 
       "home.feat.title": "不止迷因币.",
       "home.feat.sub": "阅读白皮书 →",
@@ -132,10 +177,10 @@ const resources = {
       "home.feat.card1.sub": "地府里的亿万富翁都是谁？",
       "home.feat.card1.cta": "查看 →",
       "home.feat.card2.title": "投票",
-      "home.feat.card2.sub": "使用$MING投票, 决定公共鬼魂的灵堂页面信息.",
+      "home.feat.card2.sub": "使用$MING投票，决定公共鬼魂的灵堂页面信息.",
       "home.feat.card2.cta": "查看更多 →",
       "home.feat.card3.title": "De商店",
-      "home.feat.card3.sub": "烧点NFT给祖先, 献花.",
+      "home.feat.card3.sub": "烧点NFT给祖先，献花.",
       "home.feat.card3.feat": "Coming soon",
       "home.feat.card4.title": "风水宝地",
       "home.feat.card4.sub": "给祖先买一个风水宝地.",
@@ -161,13 +206,13 @@ const resources = {
 
       "home.roadmap.title": "路线图",
       "home.roadmap.p1.title": "测试阶段1",
-      "home.roadmap.p1.sub": "在测试网上部署, 燃烧、名鬼堂、投票.",
+      "home.roadmap.p1.sub": "在测试网上部署，燃烧、名鬼堂、投票.",
       "home.roadmap.p2.title": "测试阶段2",
-      "home.roadmap.p2.sub": "筹款功能. ",
+      "home.roadmap.p2.sub": "Batch mint. ",
       "home.roadmap.p3.title": "测试阶段3",
-      "home.roadmap.p3.sub": "De商店, 风水宝地, 质押.",
+      "home.roadmap.p3.sub": "De商店，风水宝地，质押.",
       "home.roadmap.p4.title": "上线主网",
-      "home.roadmap.p4.sub": "等待清明节, 烧纸.",
+      "home.roadmap.p4.sub": "等待清明节，烧纸.",
 
       "home.button.connect": "连接钱包",
       "home.button.connecting": "连接中",
@@ -190,10 +235,13 @@ const resources = {
       "dialog.edit.banner": "编辑banner",
       "dialog.edit.avatar": "编辑头像",
       "dialog.edit.bio": "编辑生平介绍",
-      "dialog.edit.profile.first": "你是第一个编辑资料的用户, 你不需要投票来更新资料信息, 了解更多",
-      "dialog.edit.profile.morethan": "你需要超过{diff}的投票来修改资料, 了解更多",
-      "dialog.edit.profile.ontop": "这个资料信息已经是第一位了, 了解更多",
-      "dialog.edit.profile.body": "任何持有$MING的用户都可以对资料进行投票, 投票数量第一的信息会在页面中进行展示, 了解更多",
+      "dialog.edit.profile.first":
+        "你是第一个编辑资料的用户，你不需要投票来更新资料信息，了解更多",
+      "dialog.edit.profile.morethan":
+        "你需要超过{diff}的投票来修改资料，了解更多",
+      "dialog.edit.profile.ontop": "这个资料信息已经是第一位了，了解更多",
+      "dialog.edit.profile.body":
+        "任何持有$MING的用户都可以对资料进行投票，投票数量第一的信息会在页面中进行展示，了解更多",
       "dialog.how.votes.work": "投票如何运作.",
 
       "dialog.vote.button": "投票",
@@ -206,11 +254,33 @@ const resources = {
 
       "funding.title1": "公平分配$MING",
       "funding.title2": "全部进入流动池",
-      "funding.body": "$MING的初始价格设置为1 ETH = 2,222,222,222,222 $MING, 预期筹集100ETH. 待筹款完成之后, 筹集到的所有ETH将会和剩余的$MING一起进入到流动池中. 关于更多公平发射的信息，请",
-      "funding.readwhitepaper": "阅读白皮书Read the whitepaper",
+      "funding.body":
+        "$MING的初始价格设置为1 ETH = xxx $MING，待筹款完成之后，筹集到的所有ETH将会和剩余的$MING一起进入到流动池中. 关于更多公平发射的信息，请",
+      "funding.readwhitepaper": "阅读白皮书",
+      "funding.viewcontract": "查看合约代码",
       "funding.raised": "已筹集到: ",
-    }
-  }
+      "funding.receive": "你会获得: ",
+      "funding.fund": "购买",
+      "funding.funding": "购买中...",
+
+      "freemint.title1": "公平分配",
+      "freemint.title2": "Free mint",
+      "freemint.body":
+        "所有的$MING都通过公平发射来分配，每次free mint你都可以获得444,444.444444个$MING(总数444,444,444,444). 关于更多公平发射的信息，请",
+      "freemint.readwhitepaper": "阅读白皮书",
+      "freemint.viewcontract": "查看合约代码",
+      "freemint.mint": "Mint",
+      "freemint.minting": "Mint中...",
+      "freemint.balance": "Mint总数: ",
+      "freemint.mybalance": "我持有的$MING: ",
+
+      "burning.loading.1": "生成鬼魂地址中...",
+      "burning.loading.2": "正在烧给鬼魂地址...",
+      "burning.loading.3": "等待地府银行确认交易...",
+      "burning.loading.4": "地府银行确认交易...",
+      "burning.loading.5": "等待交易确认...",
+    },
+  },
 };
 
 i18n
@@ -218,12 +288,12 @@ i18n
   .init({
     resources,
     fallbackLng: "en",
-    lng: "zh", // language to use, more information here: https://www.i18next.com/overview/configuration-options#languages-namespaces-resources
+    // lng: "zh", // language to use, more information here: https://www.i18next.com/overview/configuration-options#languages-namespaces-resources
     // you can use the i18n.changeLanguage function to change the language manually: https://www.i18next.com/overview/api#changelanguage
     // if you're using a language detector, do not define the lng option
     interpolation: {
-      escapeValue: false // react already safes from xss
-    }
+      escapeValue: false, // react already safes from xss
+    },
   });
 
-  export default i18n;
+export default i18n;

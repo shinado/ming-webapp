@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Funding from "../../abi/Funding.json";
-import { getFundingAmount } from "../../app/public_api";
 import "../../app/globals.css";
 import i18next from "../../app/i18n";
 const { ethers } = require("ethers");
@@ -16,8 +15,6 @@ export default function Fund() {
   const [loading, setIsLoading] = useState(false);
 
   async function fetchContractData() {
-    const balance = await getFundingAmount();
-    setTotalFunds(balance);
     const response = await fetch(
       "/api/getBalanceOf?userAddress=" +
         process.env.NEXT_PUBLIC_FUND_CONTRACT_ADDRESS +
@@ -25,6 +22,8 @@ export default function Fund() {
         process.env.NEXT_PUBLIC_WETH_CONTRACT_ADDRESS
     );
     const data = await response.json();
+    console.log("balance of funding: ", data);
+
     if (data.balance) {
       setTotalFunds(data.balance); // Convert the result to ETH if needed
     }
@@ -35,49 +34,48 @@ export default function Fund() {
   }, []);
 
   const handleFund = async () => {
-    // TODO: Implement funding logic using the contract
-    setIsLoading(true);
-    console.log(`Funding with amount: ${fundAmount} ETH`);
-    if (typeof window.ethereum !== "undefined") {
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      // const provider = new ethers.providers.Web3Provider(window.ethereum);
-      if (provider) {
-        const contract = new ethers.Contract(
-          process.env.NEXT_PUBLIC_FUND_CONTRACT_ADDRESS,
-          fundingABI,
-          provider
-        );
-        const signer = await provider.getSigner();
-        const fundingContract = contract.connect(signer);
+    //do nothing for now
+    // setIsLoading(true);
+    // if (typeof window.ethereum !== "undefined") {
+    //   const provider = new ethers.BrowserProvider(window.ethereum);
+    //   // const provider = new ethers.providers.Web3Provider(window.ethereum);
+    //   if (provider) {
+    //     const contract = new ethers.Contract(
+    //       process.env.NEXT_PUBLIC_FUND_CONTRACT_ADDRESS,
+    //       fundingABI,
+    //       provider
+    //     );
+    //     const signer = await provider.getSigner();
+    //     const fundingContract = contract.connect(signer);
 
-        // Convert the amount to Wei (1 ETH = 1e18 Wei)
-        const amountInWei = ethers.parseEther(fundAmount);
-        try {
-          const tx = await fundingContract.fund4TestOnly({
-            value: amountInWei,
-          });
-          // Wait for the transaction to be confirmed
-          await tx.wait();
+    //     // Convert the amount to Wei (1 ETH = 1e18 Wei)
+    //     const amountInWei = ethers.parseEther(fundAmount);
+    //     try {
+    //       const tx = await fundingContract.fund4TestOnly({
+    //         value: amountInWei,
+    //       });
+    //       // Wait for the transaction to be confirmed
+    //       await tx.wait();
 
-          const amountReceived = amountOfMing;
-          fetchContractData();
-          setIsLoading(false);
-          onNumberChange(0);
-          alert("You've recieved " + amountReceived + " $MING!");
-        } catch (e) {
-          alert("Error: " + e);
-          setIsLoading(false);
-        }
-      }
-    } else {
-      console.log("Install MetaMask");
-      setIsLoading(false);
-    }
+    //       const amountReceived = amountOfMing;
+    //       fetchContractData();
+    //       setIsLoading(false);
+    //       onNumberChange(0);
+    //       alert("You've recieved " + amountReceived + " $MING!");
+    //     } catch (e) {
+    //       alert("Error: " + e);
+    //       setIsLoading(false);
+    //     }
+    //   }
+    // } else {
+    //   console.log("Install MetaMask");
+    //   setIsLoading(false);
+    // }
   };
 
   const onNumberChange = (value) => {
     setFundAmount(value);
-    setAmountOfMing(value * 2222222222222);
+    setAmountOfMing(value * 500500500500.5);
   };
 
   return (
@@ -87,9 +85,9 @@ export default function Fund() {
           {i18next.t("funding.title1")}
         </div>
         <div className="text-6xl font-bold mb-2">
-          {i18next.t("funding.title1")}
+          {i18next.t("funding.title2")}
         </div>
-        <div className="mb-4 text-left">
+        <div className="text-left">
           {i18next.t("funding.body") + " "}
           <Link
             href="LINK_TO_WHITEPAPER"
@@ -97,10 +95,16 @@ export default function Fund() {
           >
             {i18next.t("funding.readwhitepaper")}
           </Link>
-          .
+          , {" " + i18next.t("global.or")}
+          <Link
+            href="LINK_TO_WHITEPAPER"
+            className="text-blue-500 hover:text-blue-700"
+          >
+            {i18next.t("funding.viewcontract")}
+          </Link>
         </div>
 
-        <div className="text-l font-bold mb-4">
+        <div className="text-l font-bold mt-2">
           {i18next.t("funding.raised") + totalFunds + " ETH"}
         </div>
 
@@ -111,7 +115,7 @@ export default function Fund() {
         ></div>
       </div> */}
 
-        <div className="flex flex-row">
+        <div className="flex flex-row mt-8">
           <input
             type="number"
             value={fundAmount}
@@ -124,12 +128,12 @@ export default function Fund() {
             className="ml-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             disabled={loading}
           >
-            {loading ? "Funding..." : "Fund"}
+            {loading ? i18next.t("funding.funding") : i18next.t("funding.fund")}
           </button>
         </div>
 
-        <div className="text-m mb-4 mt-1">
-          You will receive: {amountOfMing.toLocaleString()} MING
+        <div className="text-sm mb-4 mt-1">
+          {i18next.t("funding.receive") + amountOfMing.toLocaleString()} $MING
         </div>
       </div>
 

@@ -87,13 +87,14 @@ const Burn = forwardRef((props, ref) => {
         className={playVideo ? "fadeIn" : "fadeOut"}
       >
         {playVideo && (
-          <ReactPlayer
-            url="/burnings-2.mp4"
-            playing={playVideo}
-            loop
-            width="100%"
-            height="100%"
-          />
+          <div className="video-container">
+            <ReactPlayer
+              url="/burning-fire.mp4"
+              playing={playVideo}
+              loop
+              className="react-player"
+            />
+          </div>
         )}
       </div>
 
@@ -110,16 +111,11 @@ const Burn = forwardRef((props, ref) => {
         >
           <LoadingText
             textArray={[
-              "Generating ghost address...",
-              "Burning to ghost address...",
-              "Waiting for Bank of Hell to comfirm...",
-              "Bank of Hell returns OK...",
-              "Waiting for transaction to complete...",
-              "Waiting for transaction to complete...",
-              "Waiting for transaction to complete...",
-              "Waiting for transaction to complete...",
-              "Waiting for transaction to complete...",
-              "Waiting for transaction to complete...",
+              i18next.t("burning.loading.1"),
+              i18next.t("burning.loading.2"),
+              i18next.t("burning.loading.3"),
+              i18next.t("burning.loading.4"),
+              i18next.t("burning.loading.5"),
             ]}
             style={{
               position: "relative",
@@ -146,7 +142,7 @@ const Burn = forwardRef((props, ref) => {
               {i18next.t("home.burn.content.history")}
             </Link>
             , {i18next.t("home.burn.content.or")}
-            <Link href="/fund">
+            <Link href="/freemint">
               {i18next.t("home.burn.content.morecoins")}
             </Link>
           </p>

@@ -34,7 +34,7 @@ const WalletConnect = ({
           "_blank"
         );
       } else {
-        window.location.href = "/fund";
+        window.location.href = "/freemint";
       }
     } catch (error) {
       console.error("Error checking fund status:", error);

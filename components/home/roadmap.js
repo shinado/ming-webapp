@@ -12,7 +12,7 @@ export default function Roadmap() {
           <div className="mt-10">
             <div className="mb-8">
               <div className="milestone">
-                <span className="milestone-date">2024-01-10</span>
+                <span className="milestone-date">2024-01-20</span>
                 <div className="milestone-details">
                   <h3 className="milestone-title">
                     {i18next.t("home.roadmap.p1.title")}
@@ -48,7 +48,7 @@ export default function Roadmap() {
               </div>
 
               <div className="milestone">
-                <span className="milestone-date">2024-03-15</span>
+                <span className="milestone-date">2024-03-30</span>
                 <div className="milestone-details">
                   <h3 className="milestone-title">
                     {i18next.t("home.roadmap.p4.title")}

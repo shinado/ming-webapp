@@ -5,8 +5,8 @@ export default async function handler(req, res) {
   const etherscanApiKey = process.env.NEXT_PUBLIC_ETHERSCAN_API_KEY;
 
   try {
-    const etherscanUrl = `https://api.etherscan.io/api?module=account&action=tokenbalance
-      &contractaddress=${contractAddress}&address=${userAddress}&tag=latest&apikey=${etherscanApiKey}`;
+    const etherscanUrl = process.env.ETHERSCAN_END_POINT + `api?module=account&action=tokenbalance&contractaddress=${contractAddress}&address=${userAddress}&tag=latest&apikey=${etherscanApiKey}`;
+    console.log(etherscanUrl);
 
     const response = await fetch(etherscanUrl);
     if (!response.ok) {

@@ -1,6 +1,4 @@
 import React, { createContext, useState, useContext } from "react";
-import { getBalanceOfMing } from "./public_api";
-import firebase from "./firebase";
 
 const WalletStatus = createContext({
   status: { address: "", balance: "" },
@@ -19,8 +17,15 @@ export const StatusProvider = ({ children }) => {
   //get balance
   const onAddressChanged = async (address) => {
     console.log("address changed: " + address);
-    const balance = await getBalanceOfMing(address);
-    console.log("balance: " + balance);
+    const response = await fetch(
+      "/api/getBalanceOf?userAddress=" +
+        address +
+        "&contractAddress=" +
+        process.env.NEXT_PUBLIC_MING_CONTRACT_ADDRESS
+    );
+    const data = await response.json();
+    console.log("my balance: ", data);
+    const balance = data.balance;
 
     setStatus({
       address: address,
@@ -73,9 +78,7 @@ export const StatusProvider = ({ children }) => {
                 {
                   chainId: goerliChainId,
                   chainName: "Goerli Test Network",
-                  rpcUrls: [
-                    "https://rpc.ankr.com/eth_goerli",
-                  ],
+                  rpcUrls: ["https://rpc.ankr.com/eth_goerli"],
                   nativeCurrency: {
                     name: "Goerli ETH",
                     symbol: "GOR",

@@ -204,7 +204,7 @@ const ProfileCard = ({ profile, refreshProfile }) => {
       <div className="flex space-x-4">
         <div>
           <p className="text-white font-bold text-sm">{i18next.t("profile.page.wealth")}</p>
-          <p className="text-white">{wealth}</p>
+          <p className="text-white font-bold">{wealth} $MING</p>
         </div>
 
         <button
@@ -242,7 +242,7 @@ const ProfileCard = ({ profile, refreshProfile }) => {
       {/* transactions */}
       <div>
         <p className="text-white font-bold text-sm mt-5">{i18next.t("profile.page.transactions")}</p>
-        {profile.transactions && <Transactions data={profile.transactions} />}
+        {profile.transactions && <Transactions data={profile.transactions}/>}
       </div>
     </div>
   );
