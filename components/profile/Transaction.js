@@ -1,3 +1,4 @@
+import { getDisplayableValueFromContract } from "@/app/public_api";
 import React from "react";
 
 function Transactions(props) {
@@ -12,32 +13,32 @@ function Transactions(props) {
               From
             </th>
             <th scope="col" class="px-6 py-3">
-              To
+              Amount
             </th>
             <th scope="col" class="px-6 py-3">
-              Amount
+              Message
             </th>
           </tr>
         </thead>
         <tbody>
           {data.map((item, index) => (
-            <tr key={index} class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+            <tr
+              key={index}
+              class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
+            >
               <th
                 scope="row"
                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
               >
                 <a href={`/history?address=${item.from}`}>{item.from}</a>
               </th>
-              <td class="px-6 py-4">
-                <a href={`/profile?address=${item.to}`}>{item.to}</a>
-              </td>
-              <td class="px-6 py-4">{item.value}</td>
+              <td class="px-6 py-4">{getDisplayableValueFromContract(item.amount) }</td>
+              <td class="px-6 py-4">{item.message}</td>
             </tr>
           ))}
         </tbody>
       </table>
     </div>
-
   );
 }
 

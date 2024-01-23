@@ -1,5 +1,7 @@
 import WalletConnect from "./walletConnect";
 import i18next from "../../app/i18n";
+import Link from "next/link";
+import ReactPlayer from "react-player";
 
 export default function Banner({ onBurning }) {
   return (
@@ -9,22 +11,20 @@ export default function Banner({ onBurning }) {
         className="relative h-screen bg-cover bg-center"
         style={{ backgroundImage: `url('/banner.png')` }}
       >
-        {/* Overlay Bar */}
-        <div className="absolute top-0 left-0 right-0 bg-black text-white text-sm p-2 text-center z-10">
-          View source code in{" "}
-          <a href="https://github.com/shinado/ming-webapp">GitHub</a> and
-          request to pull your code
-        </div>
+
         {/* Overlay */}
-        <div className="absolute inset-0 bg-[#330000] opacity-50"></div>
+        <div className="absolute inset-0 bg-[#330000] opacity-70"></div>
 
         {/* Content */}
         <div className="relative flex justify-center items-center h-full">
           <div className="text-center text-white">
-            <h1 className="text-7xl font-bold">
+            <h1 className="text-8xl font-bold">
               {i18next.t("home.banner.title")}
             </h1>
-            <p className="text-2xl mt-4">{i18next.t("home.banner.sub")}</p>
+            <p className="text-xl mt-4">
+              {i18next.t("home.banner.sub")}
+              <Link href={process.env.NEXT_PUBLIC_WHITEPAPER}>{i18next.t("global.readwhitepaper")}</Link>
+            </p>
             <p className="text-l mt-1">{i18next.t("home.banner.hint")}</p>
             <WalletConnect onBurning={onBurning} />
             {/* <button

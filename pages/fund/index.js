@@ -4,6 +4,7 @@ import Link from "next/link";
 import Funding from "../../abi/Funding.json";
 import "../../app/globals.css";
 import i18next from "../../app/i18n";
+import { getTotalMinted } from "@/app/public_api";
 const { ethers } = require("ethers");
 
 const fundingABI = Funding.abi;
@@ -15,18 +16,8 @@ export default function Fund() {
   const [loading, setIsLoading] = useState(false);
 
   async function fetchContractData() {
-    const response = await fetch(
-      "/api/getBalanceOf?userAddress=" +
-        process.env.NEXT_PUBLIC_FUND_CONTRACT_ADDRESS +
-        "&contractAddress=" +
-        process.env.NEXT_PUBLIC_WETH_CONTRACT_ADDRESS
-    );
-    const data = await response.json();
-    console.log("balance of funding: ", data);
-
-    if (data.balance) {
-      setTotalFunds(data.balance); // Convert the result to ETH if needed
-    }
+    const balance = await getTotalMinted();
+    setTotalFunds(balance);
   }
 
   useEffect(() => {
@@ -34,59 +25,56 @@ export default function Fund() {
   }, []);
 
   const handleFund = async () => {
-    //do nothing for now
-    // setIsLoading(true);
-    // if (typeof window.ethereum !== "undefined") {
-    //   const provider = new ethers.BrowserProvider(window.ethereum);
-    //   // const provider = new ethers.providers.Web3Provider(window.ethereum);
-    //   if (provider) {
-    //     const contract = new ethers.Contract(
-    //       process.env.NEXT_PUBLIC_FUND_CONTRACT_ADDRESS,
-    //       fundingABI,
-    //       provider
-    //     );
-    //     const signer = await provider.getSigner();
-    //     const fundingContract = contract.connect(signer);
+    setIsLoading(true);
+    if (typeof window.ethereum !== "undefined") {
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      // const provider = new ethers.providers.Web3Provider(window.ethereum);
+      if (provider) {
+        const contract = new ethers.Contract(
+          process.env.NEXT_PUBLIC_FUND_CONTRACT_ADDRESS,
+          fundingABI,
+          provider
+        );
+        const signer = await provider.getSigner();
+        const fundingContract = contract.connect(signer);
+        // Convert the amount to Wei (1 ETH = 1e18 Wei)
+        const amountInWei = ethers.parseEther(fundAmount);
+        try {
+          const tx = await fundingContract.batchMint({
+            value: amountInWei,
+          });
+          // Wait for the transaction to be confirmed
+          await tx.wait();
+          await fetchContractData();
 
-    //     // Convert the amount to Wei (1 ETH = 1e18 Wei)
-    //     const amountInWei = ethers.parseEther(fundAmount);
-    //     try {
-    //       const tx = await fundingContract.fund4TestOnly({
-    //         value: amountInWei,
-    //       });
-    //       // Wait for the transaction to be confirmed
-    //       await tx.wait();
-
-    //       const amountReceived = amountOfMing;
-    //       fetchContractData();
-    //       setIsLoading(false);
-    //       onNumberChange(0);
-    //       alert("You've recieved " + amountReceived + " $MING!");
-    //     } catch (e) {
-    //       alert("Error: " + e);
-    //       setIsLoading(false);
-    //     }
-    //   }
-    // } else {
-    //   console.log("Install MetaMask");
-    //   setIsLoading(false);
-    // }
+          onNumberChange(0);
+          setIsLoading(false);
+          //show successful dialog
+        } catch (e) {
+          alert("Error: " + e);
+          setIsLoading(false);
+        }
+      }
+    } else {
+      console.log("Install MetaMask");
+      setIsLoading(false);
+    }
   };
 
   const onNumberChange = (value) => {
     setFundAmount(value);
-    setAmountOfMing(value * 500500500500.5);
+    setAmountOfMing(value * 5005005005);
   };
 
   return (
-    <div className="flex flex-col md:flex-row mt-10 h-screen px-20">
+    <div className="flex flex-col md:flex-row h-screen px-20">
       <div className="flex flex-col items-left justify-center md:w-2/3">
         <div className="text-6xl font-bold mb-2">
           {i18next.t("funding.title1")}
         </div>
-        <div className="text-6xl font-bold mb-2">
+        {/* <div className="text-6xl font-bold mb-2">
           {i18next.t("funding.title2")}
-        </div>
+        </div> */}
         <div className="text-left">
           {i18next.t("funding.body") + " "}
           <Link
@@ -104,16 +92,16 @@ export default function Fund() {
           </Link>
         </div>
 
-        <div className="text-l font-bold mt-2">
-          {i18next.t("funding.raised") + totalFunds + " ETH"}
-        </div>
+        <div className="text-sm">{i18next.t("funding.note")}</div>
 
-        {/* <div class="w-full bg-gray-200 rounded-full h-1.5 mb-4 dark:bg-gray-700">
-        <div
-          class="bg-blue-600 h-1.5 rounded-full dark:bg-blue-500"
-          style="width: 45%"
-        ></div>
-      </div> */}
+        <div className="text-l font-bold mt-6">
+          {i18next.t("freemint.process") +
+            " " +
+            totalFunds +
+            "(444,444,444,444) " +
+            (totalFunds / 444444444444) * 100 +
+            "%"}
+        </div>
 
         <div className="flex flex-row mt-8">
           <input

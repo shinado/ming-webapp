@@ -3,17 +3,18 @@ import React from "react";
 import "../../app/globals.css"; // Adjust the path to your global CSS file
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { getBaseProfile, getProfileList } from "../../app/public_api";
+import {
+  getBaseProfile,
+  getBurningHistory,
+  getProfileList,
+} from "../../app/public_api";
 import BigNumber from "bignumber.js";
 import ProfileCard from "@/components/profile/Profile";
 
 async function getTransactions(address) {
   try {
-    const response = await fetch(`/api/getTransactions?to=${address}`);
-    if (!response.ok) {
-      throw new Error(`response: ${response}`);
-    }
-    return response.json();
+    const list = await getBurningHistory(address);
+    return list;
   } catch (error) {
     console.log("error:", error);
   } finally {
@@ -82,25 +83,17 @@ export default function Profile() {
 
   const refreshProfile = async (type) => {
     if (type == 4) {
-      Promise.all([
-        getBaseProfile(address),
-        getTransactions(address),
-      ])
-        .then(
-          ([
-            baseProfileResult,
-            transactionsResult,
-          ]) => {
-            // Update the profile state only once with all the new values
-            setProfile((prevProfile) => ({
-              ...prevProfile,
-              amount: BigNumber(baseProfileResult.amount)
-                .dividedBy(1e18)
-                .toString(),
-              transactions: transactionsResult,
-            }));
-          }
-        )
+      Promise.all([getBaseProfile(address), getTransactions(address)])
+        .then(([baseProfileResult, transactionsResult]) => {
+          // Update the profile state only once with all the new values
+          setProfile((prevProfile) => ({
+            ...prevProfile,
+            amount: BigNumber(baseProfileResult.amount)
+              .dividedBy(1e18)
+              .toString(),
+            transactions: transactionsResult,
+          }));
+        })
         .catch((error) => {
           // Handle any errors that occur during the fetch
           console.error("Error fetching data:", error);

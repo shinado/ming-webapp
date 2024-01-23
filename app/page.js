@@ -8,6 +8,9 @@ import Footer from "../components/home/footer";
 import { StatusProvider } from "./WalletStatus"; // adjust the path as needed
 import Introduction from "@/components/home/Introduction";
 import Features from "@/components/home/Features";
+import Navigation from "@/components/home/navbar";
+import Deaderboard from "@/components/home/Deaderboard";
+import Team from "@/components/home/Team";
 
 // pages/index.js
 export default function Home() {
@@ -21,12 +24,22 @@ export default function Home() {
   return (
     <>
       <StatusProvider>
-        {/* <Navbar /> */}
+        {/* Overlay Bar */}
+        <div className="absolute z-10 w-full">
+          <div className="bg-black text-white text-sm p-2 text-center">
+            View source code in{" "}
+            <a href="https://github.com/shinado/ming-webapp">GitHub</a>, make some changes, and
+            make pull requests! 
+          </div>
+          <Navigation selected="home" />
+        </div>
         <Banner onBurning={onBurning} />
         <Introduction />
         <Features />
         {/* <FadeDiv ref={ref}/> */}
+        <Deaderboard displayButton={false} />
         <Burn ref={ref} />
+        <Team />
         <Roadmap />
         <Footer />
       </StatusProvider>

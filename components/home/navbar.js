@@ -1,73 +1,204 @@
-export default function Navbar() {
-  return (
-    <div>
-        <nav class="bg-white dark:bg-gray-900 fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
-      {/* <nav class="bg-white border-gray-200 dark:bg-gray-900"> */}
-        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-          <a
-            href="https://flowbite.com/"
-            class="flex items-center space-x-3 rtl:space-x-reverse"
-          >
-            <img
-              src="https://flowbite.com/docs/images/logo.svg"
-              class="h-8"
-              alt="Flowbite Logo"
-            />
-            <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
-              Flowbite
+"use client";
+
+import { useEffect, useState } from "react";
+import { useStatus } from "../../app/WalletStatus"; // adjust the path as needed
+import { Avatar, Dropdown, Navbar } from "flowbite-react";
+import "../../app/globals.css";
+import { getDisplayableValueFromContract } from "@/app/public_api";
+import i18next from "../../app/i18n";
+import i18n from "i18next";
+
+function displayAddress(addr) {
+  if (addr.length >= 10) {
+    return addr.substring(0, 5) + "..." + addr.substring(addr.length - 5);
+  } else {
+    return addr;
+  }
+}
+
+function handleAccountsChanged(accounts) {
+  checkStatus();
+}
+
+function disconnect() {
+  // If you're using a provider like MetaMask, you can reset it
+  if (window.ethereum) {
+    window.ethereum.removeListener("accountsChanged", handleAccountsChanged);
+    window.ethereum = null;
+  }
+}
+
+export default function Navigation({ selected }) {
+  console.log("selected: ", selected);
+  const { connecting, status, checkStatus, connectWallet } = useStatus();
+  const [address, setAddress] = useState("");
+  const [balance, setBalance] = useState("");
+  const [language, setLanguage] = useState("en");
+
+  useEffect(() => {
+    setAddress(displayAddress(status.address));
+    setBalance(getDisplayableValueFromContract(status.balance));
+  }, [status.balance, status.address]);
+
+  const dropdown = (
+    <div className="flex md:order-2">
+      <Dropdown
+        arrowIcon={false}
+        inline
+        label={<Avatar alt="User settings" img="/icon_avatar.png" rounded />}
+      >
+        <Dropdown.Header>
+          <div className="flex justify-between items-center">
+            <div className="flex items-center">
+              <img
+                src="/ic_wallet.png"
+                alt="Edit"
+                className="w-4 h-4" // Adjust size as needed
+              />
+              <span className="ml-2 block text-sm font-bold">
+                {i18next.t("nav.address")}
+              </span>
+            </div>
+            <span className="block truncate-text text-sm font-medium ml-4">
+              {address}
             </span>
-          </a>
-         
-          <div
-            class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
-            id="navbar-user"
-          >
-            <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-              <li>
-                <a
-                  href="#"
-                  class="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500"
-                  aria-current="page"
-                >
-                  Home
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-                >
-                  About
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-                >
-                  Services
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-                >
-                  Pricing
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-                >
-                </a>
-              </li>
-            </ul>
-            <div class="flex flex-col text-sm">Balance: 123322323m</div>
           </div>
-        </div>
-      </nav>
+
+          <div className="mt-2 flex justify-between items-center">
+            <div className="flex items-center">
+              <img
+                src="/ic_balance.png"
+                alt="Edit"
+                className="w-4 h-4" // Adjust size as needed
+              />
+              <span className="ml-2 block text-sm font-bold">
+                {i18next.t("nav.balance")}
+              </span>
+            </div>
+            <span className="block truncate text-sm font-medium ml-4">
+              {balance}
+            </span>
+          </div>
+        </Dropdown.Header>
+
+        <Dropdown.Item
+          className="flex justify-between items-center"
+          onClick={() => {
+            window.location.href = "/history";
+          }}
+        >
+          <div className="flex items-center">
+            <img
+              src="/ic_history.png"
+              alt="Edit"
+              className="w-4 h-4" // Adjust size as needed
+            />
+            <span className="ml-2 block text-sm font-bold">
+              {i18next.t("nav.history")}
+            </span>
+          </div>
+        </Dropdown.Item>
+        <Dropdown.Item
+          className="flex justify-between items-center"
+          onClick={() => {
+            window.location.href = "/freemint";
+          }}
+        >
+          <div className="flex items-center">
+            <img
+              src="/ic_mint.png"
+              alt="Edit"
+              className="w-4 h-4" // Adjust size as needed
+            />
+            <span className="ml-2 block text-sm font-bold">
+              {i18next.t("nav.min")}
+            </span>
+          </div>
+        </Dropdown.Item>
+        <Dropdown.Item
+          className="flex justify-between items-center"
+          onClick={() => {
+            setLanguage("zh");
+            i18n.changeLanguage("zh", (err, t) => {
+              if (err) console.log("something went wrong loading", err);
+              else console.log(t("home.roadmap.title"));
+            });
+          }}
+        >
+          <div className="flex items-center">
+            <img
+              src="/ic_lang.png"
+              alt="Edit"
+              className="w-4 h-4" // Adjust size as needed
+            />
+            <span className="ml-2 block text-sm font-bold">
+              {i18next.t("nav.language")}
+            </span>
+          </div>
+          <span className="block truncate-text text-sm font-medium ml-4">
+            {language}
+          </span>
+        </Dropdown.Item>
+        <Dropdown.Divider />
+        <Dropdown.Item
+          className="flex justify-between items-center"
+          onClick={() => {
+            disconnect();
+          }}
+        >
+          <div className="flex items-center">
+            <img
+              src="/ic_logout.png"
+              alt="Edit"
+              className="w-4 h-4" // Adjust size as needed
+            />
+            <span className="ml-2 block text-sm font-bold">Disconnect</span>
+          </div>
+        </Dropdown.Item>
+      </Dropdown>
+      <Navbar.Toggle />
     </div>
+  );
+
+  const button = (
+    <button
+      className="flex md:order-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      onClick={connectWallet}
+      disabled={connecting}
+    >
+      {connecting
+        ? i18next.t("home.button.connecting")
+        : i18next.t("home.button.connect")}
+    </button>
+  );
+
+  return (
+    <Navbar fluid rounded>
+      <Navbar.Brand href="/">
+        <img src="/icon_qin.png" className="mr-3 h-6 sm:h-9" alt="Logo" />
+        <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
+          {i18next.t("nav.title")}
+        </span>
+      </Navbar.Brand>
+      {address ? dropdown : button}
+      <Navbar.Collapse>
+        <Navbar.Link href="/" active={selected == "home"}>
+          {i18next.t("nav.home")}
+        </Navbar.Link>
+
+        <Navbar.Link href="/burn" active={selected == "burn"}>
+          {i18next.t("nav.burn")}
+        </Navbar.Link>
+        <Navbar.Link href="/deaderboard" active={selected == "deaderboard"}>
+          {i18next.t("nav.deaderboard")}
+        </Navbar.Link>
+        <Navbar.Link href="/blog" active={selected == "blog"}>
+          {i18next.t("nav.blog")}
+        </Navbar.Link>
+        <Navbar.Link href="/freemint" active={selected == "freemint"}>
+          {i18next.t("nav.mint")}
+        </Navbar.Link>
+      </Navbar.Collapse>
+    </Navbar>
   );
 }

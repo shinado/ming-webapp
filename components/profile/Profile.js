@@ -81,19 +81,26 @@ const ProfileCard = ({ profile, refreshProfile }) => {
       setIsUploading(true);
       const formData = new FormData();
       formData.append("file", e.target.files[0]);
-      const response = await fetch("/api/uploadFile", {
-        method: "POST",
-        body: formData,
-      });
-      const data = await response.json();
-      console.log("ipfshash:", data.IpfsHash);
-      setIsUploading(false);
-      displayAddProfileDialog(
-        type,
-        { key: data.IpfsHash, value: 0 },
-        values,
-        false
-      );
+
+      try {
+        const response = await fetch("/api/uploadFile", {
+          method: "POST",
+          body: formData,
+        });
+        const data = await response.json();
+
+        console.log("ipfshash:", data.IpfsHash);
+        setIsUploading(false);
+        displayAddProfileDialog(
+          type,
+          { key: data.IpfsHash, value: 0 },
+          values,
+          false
+        );
+      } catch (e) {
+        alert(e);
+        setIsUploading(false);
+      }
     }
   }
 
@@ -145,9 +152,9 @@ const ProfileCard = ({ profile, refreshProfile }) => {
   }
 
   const ProfileHeader = ({ name, lifespan, avatarUrl }) => (
-    <div className="flex space-x-4">
+    <div className="flex-row sm:flex">
       {/* Container for image and overlay */}
-      <div className="relative w-32 h-32 min-w-[128px] mt-[-60px]">
+      <div className="relative w-32 h-32 min-w-[128px] mt-[-60px] mr-4">
         {/* Image */}
         <img
           src={avatarUrl}
@@ -203,7 +210,9 @@ const ProfileCard = ({ profile, refreshProfile }) => {
     <div className="py-4">
       <div className="flex space-x-4">
         <div>
-          <p className="text-white font-bold text-sm">{i18next.t("profile.page.wealth")}</p>
+          <p className="text-white font-bold text-sm">
+            {i18next.t("profile.page.wealth")}
+          </p>
           <p className="text-white font-bold">{wealth} $MING</p>
         </div>
 
@@ -219,7 +228,9 @@ const ProfileCard = ({ profile, refreshProfile }) => {
 
       <div className="group flex items-center space-x-2">
         <div>
-          <p className="text-white font-bold text-sm mt-5">{i18next.t("profile.page.bio")}</p>
+          <p className="text-white font-bold text-sm mt-5">
+            {i18next.t("profile.page.bio")}
+          </p>
           <p className="text-white relative">{bio}</p>
         </div>
 
@@ -241,32 +252,36 @@ const ProfileCard = ({ profile, refreshProfile }) => {
 
       {/* transactions */}
       <div>
-        <p className="text-white font-bold text-sm mt-5">{i18next.t("profile.page.transactions")}</p>
-        {profile.transactions && <Transactions data={profile.transactions}/>}
+        <p className="text-white font-bold text-sm mt-5">
+          {i18next.t("profile.page.transactions")}
+        </p>
+        {profile.transactions && <Transactions data={profile.transactions} />}
       </div>
     </div>
   );
 
-
   return (
     <div className="overflow-hidden bg-black text-left">
       <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => handleImageSelect(1, profile.banners, e)}
-          ref={bannerFileInputRef}
-          style={{ display: "none" }}
-        />
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => handleImageSelect(2, profile.portraits, e)}
-          ref={portraitFileInputRef}
-          style={{ display: "none" }}
-        />
+        type="file"
+        accept="image/*"
+        onChange={(e) => handleImageSelect(1, profile.banners, e)}
+        ref={bannerFileInputRef}
+        style={{ display: "none" }}
+      />
+      <input
+        type="file"
+        accept="image/*"
+        onChange={(e) => handleImageSelect(2, profile.portraits, e)}
+        ref={portraitFileInputRef}
+        style={{ display: "none" }}
+      />
 
       <ProfileBanner
-        imageUrl={getImageWithPlaceHolder(profile.banners, "/background_banner_blur.jpg")}
+        imageUrl={getImageWithPlaceHolder(
+          profile.banners,
+          "/background_banner_blur.jpg"
+        )}
       />
       <div className="px-10 z-10 relative">
         <ProfileHeader
@@ -331,6 +346,9 @@ const ProfileCard = ({ profile, refreshProfile }) => {
       <LoadingDialog
         content="Uploading to IPFS. Please wait..."
         open={uploading}
+        handleClose={() => {
+          setIsUploading(false);
+        }}
       />
       <BurningDialog
         address={profile.address}

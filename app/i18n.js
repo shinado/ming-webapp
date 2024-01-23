@@ -1,5 +1,6 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
+import LanguageDetector from "i18next-browser-languagedetector";
 
 // the translations
 // (tip move them in a JSON file and import them,
@@ -8,8 +9,22 @@ import { initReactI18next } from "react-i18next";
 const resources = {
   en: {
     translation: {
+      "nav.title": "Ming Coin",
+      "nav.home": "Home",
+      "nav.burn": "Burn",
+      "nav.deaderboard": "Deaderboard",
+      "nav.mint": "Mint",
+      "nav.blog": "Blog",
+      "nav.address": "Address",
+      "nav.balance": "Balance",
+      "nav.history": "History",
+      "nav.min": "Get $MING",
+      "nav.language": "Language",
+
       "global.or": "or",
       "global.burn": "Burn $MING",
+      "global.readwhitepaper": "Read whitepaper",
+      "global.visit.deaderboard": "Visit Deaderboard",
 
       "home.banner.top": "Ming Coin",
       "home.banner.title": "Ming Coin",
@@ -56,6 +71,8 @@ const resources = {
       "home.burn.title": "Burn $MING",
       "home.burn.sub":
         "Burn $MING to your ancestors for blessing, or a past-away celebrity.",
+      "home.burn.content.dk": "Don't know what to do? checkout ",
+
       "home.burn.content.visit": "Visit ",
       "home.burn.content.deaderboard": "Deaderboard",
       "home.burn.content.browse": "Browse ",
@@ -63,12 +80,18 @@ const resources = {
       "home.burn.content.or": "or ",
       "home.burn.content.morecoins": "get more $MING",
 
-
       "home.burn.form.name": "Recipient",
       "home.burn.form.name.hint": "George Washington",
       "home.burn.form.birthday": "Date of Birth",
       "home.burn.form.deathday": "Date of Death",
       "home.burn.form.amount": "Amount to burn",
+      "home.burn.form.na": "Not Applicable",
+      "home.burn.form.learn": "What happens when burning $MING?",
+      "home.burn.form.learn.desc":
+        "A ghost address(0x44444444 + {md5 hash of the name/birthdate/deathdate}) will be generated and your $MING will be transfered(burnt) to this address. Since this address is not owned by any entity ALIVE, the amount of $MING you burn quits circulation forever. ",
+      "home.burn.form.message": "Message",
+      "home.burn.form.message.hint": "Wish you all the best down there! ",
+      "home.burn.add.message": "Add a message",
 
       "home.roadmap.title": "Roadmap",
       "home.roadmap.p1.title": "Testnet phase.1",
@@ -119,55 +142,118 @@ const resources = {
 
       "dialog.add.votes": "Add votes",
 
-      "funding.title1": "Initiat $MING",
-      "funding.title2": "With a fair launch",
-      "funding.body":
-        "We set the initiatial $MING price at 1 ETH = xxx $MING. After it reaches the funding goal, all fundswill be sent to Uniswap, along with the other half of $MING to provide liquidity. For more information, please ",
-      "funding.readwhitepaper": "Read the whitepaper",
-      "funding.viewcontract": "View the contract",
-      "funding.raised": "We've raised: ",
-      "funding.receive": "You'll receive: ",
-      "funding.fund": "Fund",
-      "funding.funding": "Funding...",
-
       "freemint.title1": "Initiat $MING",
       "freemint.title2": "With free mint",
       "freemint.body":
         "All $MING tokens are distributed via fair launch. You can get 444,444.444444 $MING(of total 444,444,444,444) for each free mint. For more information, please ",
-      "freemint.readwhitepaper": "Read the whitepaper",
+      "freemint.readwhitepaper": "Read whitepaper",
       "freemint.viewcontract": "View the contract",
-      "freemint.mint": "Mint",
+      "freemint.mint": "Free Mint",
       "freemint.minting": "Minting...",
       "freemint.balance": "Total amount minted: ",
-      "freemint.mybalance": "My balance: ",
+      "freemint.mybalance": "Your balance: ",
+      "freemint.total": "Total to mint: ",
+      "freemint.mintamount": "Amount per mint: ",
+      "freemint.process": "Mint process: ",
+      "freemint.successful.title": "Mint Successful",
+      "freemint.successful.body": "Your've minted ",
+      "freemint.successful.next.title": "What next?",
+      "freemint.successful.next.body":
+        "Burn $MING to an ancestore for blessings, or visit Deaderboard and burn to your favorite character. ",
+      "freemint.try.batch": "Try batch mint",
+
+      "freemint.batch.title": "Batch Mint",
+      "freemint.batch.body":
+        "We set the initiatial $MING price based on the gas fee for each free mint. After the distribution, all deposted ETH and MING will be sent to Uniswap to provide liquidity and never exit. For more information, please ",
+      "freemint.batch.note":
+        "*Please note adding funds to liquidity pool is not implemented on testnet. ",
+      "freemint.you.receive": "You'll receive ",
+      "freemint.batch.pay": "Deposite Amount",
+      "freemint.batch.exceed": "Exceed max deposite amount",
+      "freemint.batch.button": "Batch Mint",
+      "freemint.batch.buttoning": "Minting...",
 
       "burning.loading.1": "Generating ghost address...",
       "burning.loading.2": "Burning to ghost address...",
       "burning.loading.3": "Waiting for Bank of Hell to comfirm...",
       "burning.loading.4": "Bank of Hell returns OK...",
       "burning.loading.5": "Waiting for transaction to complete...",
+
+      "nav.address": "Address",
+      "nav.balance": "Balance",
+      "nav.history": "History",
+      "nav.mint": "Mint",
+      "nav.language": "Language",
+
+      "deaderboard.title": "Deaderboard",
+      "deaderboard.rank": "Rank",
+      "deaderboard.name": "Ghost",
+      "deaderboard.wealth": "Wealth",
+      "deaderboard.create": "Burn to someone else",
+
+      "team.title": "Meet the team",
+      "team.body":
+        "The best team in hell. Unmatched Excellence, Guaranteed Results.",
+      "team.1.name": "Grim Reaper",
+      "team.1.title": "Chief Growth Officer",
+      "team.1.body":
+        "Deeply rooted in Hellverse for over thousands of years, I have extensive experience in user growth in the field",
+      "team.2.name": "Hela",
+      "team.2.title": "Europe & North America Marketing Lead",
+      "team.2.body":
+        "Focusing on Norse Mythology, well-known for Mjolnir destoyer. ",
+      "team.3.name": "Yanluo",
+      "team.3.title": "Great China Marketing Lead",
+      "team.3.body": "President of Bank of Hell. ",
+      "team.4.name": "Anubis",
+      "team.4.title": "Africa Marketing Lead",
+      "team.4.body": "I'm a jackal, not wolf! ",
+      "team.5.name": "Shiva",
+      "team.5.title": "Hindu Marketing Lead",
+      "team.5.body": "A dance lover",
+      "team.6.name": "Ryuk",
+      "team.6.title": "Animates Marketing Lead",
+      "team.6.body": "Did you see my note?",
+      "team.7.name": "Mengpo",
+      "team.7.title": "Cross-chain Growth Lead",
+      "team.7.body":
+        "Extensive experienced in cross-chain business(namely Naihe Bridge). A chef. ",
     },
   },
   zh: {
     translation: {
+      "nav.title": "区块链冥币",
+      "nav.home": "主页",
+      "nav.burn": "烧冥币",
+      "nav.deaderboard": "名鬼堂",
+      "nav.mint": "铸造",
+      "nav.blog": "博客",
+      "nav.address": "地址",
+      "nav.balance": "余额",
+      "nav.history": "历史记录",
+      "nav.min": "获取冥币",
+      "nav.language": "语言",
+
       "global.or": "或者",
       "global.burn": "燃烧$MING",
+      "global.readwhitepaper": "阅读白皮书",
+      "global.visit.deaderboard": "访问名鬼堂",
 
-      "home.banner.title": "Ming Coin",
-      "home.banner.sub": "区块链冥币，构建低通胀和谐地府",
+      "home.banner.title": "区块链冥币",
+      "home.banner.sub": "解决阴间通胀，共建和谐地府。赛博冥币，越烧越贵。",
       "home.banner.hint": "*已经部署至测试网",
 
       "home.intro.title": "区块链冥币",
       "home.intro.sub":
-        "$Ming作为以太坊生态中的重要公共物品，致力于构建低通胀的和谐地府",
-      "home.intro.card1.title": "冥币",
-      "home.intro.card1.sub": "解决地府恶性通胀问题，让亡者在地府生活更加富足",
+        "$Ming的发行量固定为444,444,444,444枚，致力于构建低通胀的和谐地府",
+      "home.intro.card1.title": "通缩",
+      "home.intro.card1.sub":
+        "解决地府恶性通胀问题。构建有孝循环: 烧越多越有孝，市面冥币越少，价格越高。",
       "home.intro.card2.title": "#BUNR，不要#HODL",
-      "home.intro.card2.sub":
-        "$MING的发行量固定为444,444,444,444,444. 烧得越多，通缩越大，价格越高",
+      "home.intro.card2.sub": "专门为燃烧设计，烧掉越多，价格越高。别傻傻拿着，烧给祖先长辈、佛主菩萨、王侯将相，祈求平安财富。",
       "home.intro.card3.title": "公平发射",
       "home.intro.card3.sub":
-        "没有项目方，只有贡献者，没有任何预留。贡献者可以通过基金会领取grant",
+        "免费或批量铸造。没有项目方，只有贡献者，没有任何预留。贡献者可以通过基金会领取grant",
       "home.intro.card4.title": "环境友好",
       "home.intro.card4.sub": "今年清明不烧纸，烧纸得看合约地址",
 
@@ -191,6 +277,7 @@ const resources = {
 
       "home.burn.title": "燃烧$MING",
       "home.burn.sub": "烧给祖先、神明、已故的公众人物. ",
+      "home.burn.content.dk": "不知道烧给谁？去看看",
       "home.burn.content.visit": "访问",
       "home.burn.content.deaderboard": "名鬼堂",
       "home.burn.content.browse": "浏览",
@@ -203,6 +290,11 @@ const resources = {
       "home.burn.form.birthday": "出生日期",
       "home.burn.form.deathday": "死亡日期",
       "home.burn.form.amount": "燃烧数量",
+      "home.burn.form.na": "不适用",
+      "home.burn.form.learn": "燃烧$MING会发生什么？",
+      "home.burn.form.message": "口信",
+      "home.burn.form.message.hint": "我秦哥才是千古第一帝！",
+      "home.burn.add.message": "捎个口信",
 
       "home.roadmap.title": "路线图",
       "home.roadmap.p1.title": "测试阶段1",
@@ -252,43 +344,88 @@ const resources = {
 
       "dialog.add.votes": "添加投票",
 
-      "funding.title1": "公平分配$MING",
-      "funding.title2": "全部进入流动池",
-      "funding.body":
-        "$MING的初始价格设置为1 ETH = xxx $MING，待筹款完成之后，筹集到的所有ETH将会和剩余的$MING一起进入到流动池中. 关于更多公平发射的信息，请",
-      "funding.readwhitepaper": "阅读白皮书",
-      "funding.viewcontract": "查看合约代码",
-      "funding.raised": "已筹集到: ",
-      "funding.receive": "你会获得: ",
-      "funding.fund": "购买",
-      "funding.funding": "购买中...",
-
       "freemint.title1": "公平分配",
       "freemint.title2": "Free mint",
       "freemint.body":
         "所有的$MING都通过公平发射来分配，每次free mint你都可以获得444,444.444444个$MING(总数444,444,444,444). 关于更多公平发射的信息，请",
       "freemint.readwhitepaper": "阅读白皮书",
       "freemint.viewcontract": "查看合约代码",
-      "freemint.mint": "Mint",
+      "freemint.mint": "Free Mint",
       "freemint.minting": "Mint中...",
       "freemint.balance": "Mint总数: ",
       "freemint.mybalance": "我持有的$MING: ",
+      "freemint.total": "总量: ",
+      "freemint.mintamount": "每次铸造数量: ",
+      "freemint.process": "铸造进度: ",
+      "freemint.successful.title": "铸造成功",
+      "freemint.successful.body": "你成功铸造了 ",
+      "freemint.try.batch": "试试批量铸造",
+
+      "freemint.batch.title": "批量铸造",
+      "freemint.batch.body":
+        "我们根据每次免费铸造所消耗的gas fee制定了$MING的初始价格。铸造结束后，所有存入的ETH和MING将会作为交易对进入流动池中，永不退出。了解更多公平发射的信息，请",
+      "freemint.batch.note": "*在测试网的合约中没有实现流动池功能。 ",
+      "freemint.you.receive": "你将收到",
+      "freemint.batch.pay": "存入数量",
+      "freemint.batch.exceed": "超过了最大存入数量",
+      "freemint.batch.button": "批量铸造",
+      "freemint.batch.buttoning": "铸造中",
+      "freemint.successful.next.title": "然后呢？",
+      "freemint.successful.next.body":
+        "给你的祖先烧点冥币，或者去名鬼堂看看，支持一下你最喜欢的鬼魂。",
 
       "burning.loading.1": "生成鬼魂地址中...",
       "burning.loading.2": "正在烧给鬼魂地址...",
       "burning.loading.3": "等待地府银行确认交易...",
       "burning.loading.4": "地府银行确认交易...",
       "burning.loading.5": "等待交易确认...",
+
+      "nav.address": "钱包地址",
+      "nav.balance": "我的余额",
+      "nav.history": "燃烧历史",
+      "nav.mint": "获取$MING",
+      "nav.language": "语言",
+
+      "deaderboard.title": "名鬼堂",
+      "deaderboard.rank": "排名",
+      "deaderboard.name": "鬼魂",
+      "deaderboard.wealth": "财富",
+      "deaderboard.create": "烧给创建别的鬼魂",
+
+      "team.title": "我们的团队",
+      "team.body": "地府最强团队，使命必达。",
+      "team.1.name": "死神",
+      "team.1.title": "首席增长官",
+      "team.1.body": "深耕死亡赛道千年，有丰富的用户增长经验。",
+      "team.2.name": "Hela",
+      "team.2.title": "欧美市场负责人",
+      "team.2.body": "专注北欧神话，单手捏爆雷神之锤。",
+      "team.3.name": "阎罗王",
+      "team.3.title": "大中华市场负责人",
+      "team.3.body": "天地银行地府分行行长。",
+      "team.4.name": "Anubis",
+      "team.4.title": "非洲市场负责人Africa Marketing",
+      "team.4.body": "我不是狼！",
+      "team.5.name": "湿婆",
+      "team.5.title": "印度市场负责人Hindu Marketing",
+      "team.5.body": "舞蹈热爱者",
+      "team.6.name": "Ryuk",
+      "team.6.title": "漫画市场负责人",
+      "team.6.body": "那个，你看到我的笔记本了吗？",
+      "team.7.name": "孟婆",
+      "team.7.title": "跨链增长官",
+      "team.7.body": "在奈何桥上有丰富的协助用户跨链的经验，同时也是一名厨师。",
     },
   },
 };
 
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
+  // .use(LanguageDetector)
   .init({
     resources,
     fallbackLng: "en",
-    // lng: "zh", // language to use, more information here: https://www.i18next.com/overview/configuration-options#languages-namespaces-resources
+    lng: "zh", // language to use, more information here: https://www.i18next.com/overview/configuration-options#languages-namespaces-resources
     // you can use the i18n.changeLanguage function to change the language manually: https://www.i18next.com/overview/api#changelanguage
     // if you're using a language detector, do not define the lng option
     interpolation: {

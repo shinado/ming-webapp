@@ -20,7 +20,9 @@ const Introduction = () => {
       </div>
 
       <div className="flex flex-col md:flex-row ">
-        <div className="md:w-2/5"></div>
+        <div className="md:w-2/5">
+          <img className="p-10 blur-xl" src="/ming_logo_large.png" />
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 w-3/5 p-4">
           <Card
             imageUrl="/icon_qin.png"

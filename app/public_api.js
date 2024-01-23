@@ -60,9 +60,16 @@ export function getContractValueFromDisplayable(amount) {
 export async function getTotalMinted() {
   console.log("getTotalMinted()");
   if (typeof window.ethereum !== "undefined") {
-    const provider = new ethers.BrowserProvider(window.ethereum);
+    const provider = new ethers.JsonRpcProvider(
+      process.env.NEXT_PUBLIC_INFURA_URL
+    );
+    // const provider = new ethers.BrowserProvider(window.ethereum);
     if (provider) {
-      const contract = new ethers.Contract(process.env.NEXT_PUBLIC_MING_CONTRACT_ADDRESS, abi, provider);
+      const contract = new ethers.Contract(
+        process.env.NEXT_PUBLIC_MING_CONTRACT_ADDRESS,
+        abi,
+        provider
+      );
       const total = await contract.totalMinted();
       console.log("minted:", total);
       return getDisplayableValueFromContract(total);
@@ -76,10 +83,35 @@ export async function getTotalMinted() {
   }
 }
 
+export async function getBurningHistory(address) {
+  console.log("getBurningHistory(%s)", address);
+  if (typeof window.ethereum !== "undefined") {
+    const provider = new ethers.JsonRpcProvider(
+      process.env.NEXT_PUBLIC_INFURA_URL
+    );
+    if (provider) {
+      const contract = new ethers.Contract(
+        process.env.NEXT_PUBLIC_MING_CONTRACT_ADDRESS,
+        abi,
+        provider
+      );
+      return contract.getBurningHistory(address);
+    } else {
+      console.log("provider not found.");
+      return "";
+    }
+  } else {
+    console.log("wallet not installed.");
+    return "";
+  }
+}
+
 export async function getProfileList(type, address) {
   console.log("getProfileList(%s, %s)", type, address);
   if (typeof window.ethereum !== "undefined") {
-    const provider = new ethers.BrowserProvider(window.ethereum);
+    const provider = new ethers.JsonRpcProvider(
+      process.env.NEXT_PUBLIC_INFURA_URL
+    );
     if (provider) {
       const contract = new ethers.Contract(
         process.env.NEXT_PUBLIC_MING_CONTRACT_ADDRESS,
@@ -100,7 +132,9 @@ export async function getProfileList(type, address) {
 export async function getBaseProfile(address) {
   console.log("getBaseProfile(%s)", address);
   if (typeof window.ethereum !== "undefined") {
-    const provider = new ethers.BrowserProvider(window.ethereum);
+    const provider = new ethers.JsonRpcProvider(
+      process.env.NEXT_PUBLIC_INFURA_URL
+    );
     if (provider) {
       const contract = new ethers.Contract(
         process.env.NEXT_PUBLIC_MING_CONTRACT_ADDRESS,

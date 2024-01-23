@@ -24,7 +24,6 @@ export const StatusProvider = ({ children }) => {
         process.env.NEXT_PUBLIC_MING_CONTRACT_ADDRESS
     );
     const data = await response.json();
-    console.log("my balance: ", data);
     const balance = data.balance;
 
     setStatus({
@@ -48,14 +47,15 @@ export const StatusProvider = ({ children }) => {
           const account = accounts[0];
           onAddressChanged(account);
         } else {
-          // Wallet is not connected
-          console.log("Wallet is not connected");
+          onAddressChanged("");
         }
       } catch (error) {
         console.error("Error checking wallet connection:", error);
+        onAddressChanged("");
       }
     } else {
       console.log("Ethereum provider is not available");
+      onAddressChanged("");
     }
   };
 

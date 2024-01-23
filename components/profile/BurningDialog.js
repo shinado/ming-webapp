@@ -14,6 +14,8 @@ export default function BurningDialog({
   onBurning,
 }) {
   const [amount, setAmount] = useState("");
+  const [message, setMessage] = useState("");
+  const [displayMessage, setDisplayMessage] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleBurnClick = async () => {
@@ -33,7 +35,11 @@ export default function BurningDialog({
           const contractWithSigner = contract.connect(signer);
 
           const amountOfMing = getContractValueFromDisplayable(amount);
-          const tx = await contractWithSigner.burnWithAddress(address, amountOfMing);
+          const tx = await contractWithSigner.burnToAddress(
+            address,
+            amountOfMing,
+            message
+          );
 
           onBurning();
 
@@ -66,12 +72,12 @@ export default function BurningDialog({
       <Modal.Header />
       <Modal.Body>
         <div className="space-y-6">
-          <h3 className="text-xl font-medium text-gray-900 dark:text-white">
-          {i18next.t("dialog.burn.title")}
+          <h3 className="text-2xl font-medium text-gray-900 dark:text-white">
+            {i18next.t("dialog.burn.title")}
           </h3>
           <div>
             <div className="mb-2 block">
-              <Label htmlFor="email" value={i18next.t("dialog.burn.amount2burn")} />
+              <Label value={i18next.t("dialog.burn.amount2burn")} />
             </div>
             <TextInput
               id="amount"
@@ -82,10 +88,32 @@ export default function BurningDialog({
               required
             />
           </div>
+
+          {displayMessage ? (
+            <div>
+              <div className="mb-2 block">
+                <Label value={i18next.t("home.burn.form.message")} />
+              </div>
+              <TextInput
+                className="mt-0"
+                placeholder={i18next.t("home.burn.form.message.hint")}
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+              />
+            </div>
+          ) : (
+            <div
+              class="text-left text-blue-700  cursor-pointer"
+              onClick={() => {
+                setDisplayMessage(true);
+              }}
+            >
+              {i18next.t("home.burn.add.message")}
+            </div>
+          )}
+
           <div className="w-full">
-            <Button 
-            onClick={handleBurnClick}
-            disabled={loading}>
+            <Button onClick={handleBurnClick} disabled={loading}>
               {loading
                 ? i18next.t("home.button.burning")
                 : i18next.t("home.button.burn")}
