@@ -37,7 +37,7 @@ export default function Home() {
         <Introduction />
         <Features />
         {/* <FadeDiv ref={ref}/> */}
-        <Deaderboard displayButton={false} />
+        <Deaderboard displayButton={false} maxDisplay={100} />
         <Burn ref={ref} />
         <Team />
         <Roadmap />

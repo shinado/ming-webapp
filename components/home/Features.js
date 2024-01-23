@@ -29,7 +29,7 @@ export default function Features() {
           </h1>
         <p className="mt-10">
           <Link
-            href="/headerboard"
+            href={process.env.NEXT_PUBLIC_WHITEPAPER}
             className="text-xl text-white hover:text-[#DDDDDD]"
           >
             {i18next.t("home.feat.sub")}
@@ -39,6 +39,21 @@ export default function Features() {
 
       <div className="flex flex-col md:flex-row mt-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+
+          <FeatureCard
+            title={i18next.t("home.feat.card0.title")}
+            description={i18next.t("home.feat.card0.sub")}
+            cta={
+              <Link
+                href="/burn"
+                className="text-xl text-white hover:text-[#DDDDDD]"
+              >
+                {i18next.t("home.feat.card0.cta")}
+              </Link>
+            }
+            imageUrl="/icon_burn.png"
+          />
+
           <FeatureCard
             title={i18next.t("home.feat.card1.title")}
             description={i18next.t("home.feat.card1.sub")}
@@ -50,23 +65,9 @@ export default function Features() {
                 {i18next.t("home.feat.card1.cta")}
               </Link>
             }
-            imageUrl="/icon_burn.png"
+            imageUrl="/icon_hall_of_fame.png"
           />
 
-          {/* Card 2 - Decentralized Exchange */}
-          <FeatureCard
-            title={i18next.t("home.feat.card2.title")}
-            description={i18next.t("home.feat.card2.sub")}
-            imageUrl="/icon_vote.png"
-            cta={
-              <Link
-                href="/deaderboard"
-                className="text-xl text-white hover:text-[#DDDDDD]"
-              >
-                {i18next.t("home.feat.card2.cta")}
-              </Link>
-            }
-          />
 
           {/* Card 3 - Liquidity Pools */}
           <FeatureCard
@@ -77,14 +78,28 @@ export default function Features() {
             imageUrl="/icon_shop.png"
           />
 
-          {/* Card 3 - Liquidity Pools */}
+          {/* Card 2 - Decentralized Exchange */}
           <FeatureCard
+            title={i18next.t("home.feat.card2.title")}
+            description={i18next.t("home.feat.card2.sub")}
+            imageUrl="/icon_vote.png"
+            cta={
+              <Link
+                href={process.env.NEXT_PUBLIC_WHITEPAPER}
+                className="text-xl text-white hover:text-[#DDDDDD]"
+              >
+                {i18next.t("home.feat.card2.cta")}
+              </Link>
+            }
+          />
+
+          {/* <FeatureCard
             title={i18next.t("home.feat.card4.title")}
             description={i18next.t("home.feat.card4.sub")}
             iconBgColor="bg-gradient-to-r from-green-400 to-blue-500"
             imageUrl="/icon_house.png"
             feature="Coming Soon"
-          />
+          /> */}
 
           <FeatureCard
             title={i18next.t("home.feat.card5.title")}

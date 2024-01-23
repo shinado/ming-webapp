@@ -7,7 +7,7 @@ export default function deaderboard() {
   return (
     <StatusProvider>
       <Navigation selected="deaderboard" />
-      <Deaderboard displayButton={true} />
+      <Deaderboard displayButton={true} maxDisplay={100} />
     </StatusProvider>
   );
 }

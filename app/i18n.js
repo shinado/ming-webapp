@@ -50,6 +50,9 @@ const resources = {
 
       "home.feat.title": "Beyond memecoins.",
       "home.feat.sub": "Read whitepaper →",
+      "home.feat.card0.title": "Burn",
+      "home.feat.card0.sub": "Burn $MING to deities for blessings. The more $MING you burn, the less $MING in circulation",
+      "home.feat.card0.cta": "Burn $MING →",
       "home.feat.card1.title": "Deaderboard",
       "home.feat.card1.sub": "Check out the billionaires in the afterlife.",
       "home.feat.card1.cta": "See who's on top →",
@@ -218,6 +221,10 @@ const resources = {
       "team.7.title": "Cross-chain Growth Lead",
       "team.7.body":
         "Extensive experienced in cross-chain business(namely Naihe Bridge). A chef. ",
+
+      "footer.about": "About",
+      "footer.follow.us": "Follow us on ",
+      "footer.links": "Quick Links",
     },
   },
   zh: {
@@ -259,14 +266,17 @@ const resources = {
 
       "home.feat.title": "不止迷因币.",
       "home.feat.sub": "阅读白皮书 →",
+      "home.feat.card0.title": "燃烧",
+      "home.feat.card0.sub": "给祖先烧点冥币，烧越多越有孝；冥币流通量越少，越烧越有钱。",
+      "home.feat.card0.cta": "烧冥币 →",
       "home.feat.card1.title": "名鬼堂",
-      "home.feat.card1.sub": "地府里的亿万富翁都是谁？",
+      "home.feat.card1.sub": "疯狂星期四给你秦始皇秦哥烧50冥币保你牛市发大财。",
       "home.feat.card1.cta": "查看 →",
       "home.feat.card2.title": "投票",
       "home.feat.card2.sub": "使用$MING投票，决定公共鬼魂的灵堂页面信息.",
-      "home.feat.card2.cta": "查看更多 →",
+      "home.feat.card2.cta": "了解更多 →",
       "home.feat.card3.title": "De商店",
-      "home.feat.card3.sub": "烧点NFT给祖先，献花.",
+      "home.feat.card3.sub": "给祖先烧纸房子、iPhone、保时捷，再买个风水宝地.",
       "home.feat.card3.feat": "Coming soon",
       "home.feat.card4.title": "风水宝地",
       "home.feat.card4.sub": "给祖先买一个风水宝地.",
@@ -415,6 +425,10 @@ const resources = {
       "team.7.name": "孟婆",
       "team.7.title": "跨链增长官",
       "team.7.body": "在奈何桥上有丰富的协助用户跨链的经验，同时也是一名厨师。",
+
+      "footer.about": "关于",
+      "footer.follow.us": "关注我们：",
+      "footer.links": "链接",
     },
   },
 };

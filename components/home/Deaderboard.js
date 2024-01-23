@@ -23,7 +23,7 @@ function toNumber(amount) {
   }
 }
 
-export default function Deaderboard({ displayButton }) {
+export default function Deaderboard({ displayButton, maxDisplay }) {
   const [leaderboardData, setLeaderboardData] = useState([]);
 
   useEffect(() => {
@@ -51,12 +51,14 @@ export default function Deaderboard({ displayButton }) {
             return [];
           }
 
+          //display 10 at most
           const sorted = [...list].sort((a, b) => {
             return new BigNumber(b.amount)
               .minus(new BigNumber(a.amount))
               .toNumber();
           });
-          setLeaderboardData(sorted);
+
+          setLeaderboardData(sorted.slice(0,maxDisplay));
           return list;
         } catch (e) {
           return [];
