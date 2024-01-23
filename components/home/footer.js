@@ -1,4 +1,5 @@
 import i18next from "i18next";
+import Link from "next/link";
 
 export default function Footer() {
   return (
@@ -14,12 +15,12 @@ export default function Footer() {
               </h3>
               <p className="mt-2">
                 {i18next.t("footer.follow.us")}
-                <a
+                <Link
                   href="https://twitter.com/ming_coin_eth"
                   className="text-blue-500 hover:text-blue-300"
                 >
                   Twitter
-                </a>
+                </Link>
               </p>
               {/* Add more info or links here */}
             </div>
@@ -30,29 +31,29 @@ export default function Footer() {
               {/* Replace '#' with actual URLs */}
               <ul className="mt-2">
                 <li>
-                  <a href="/" className="hover:text-gray-300">
+                  <Link href="/" className="hover:text-gray-300">
                     {i18next.t("nav.home")}
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="/burn" className="hover:text-gray-300">
+                  <Link href="/burn" className="hover:text-gray-300">
                     {i18next.t("nav.burn")}
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="/deaderboard" className="hover:text-gray-300">
+                  <Link href="/deaderboard" className="hover:text-gray-300">
                     {i18next.t("nav.deaderboard")}
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="/blog" className="hover:text-gray-300">
+                  <Link href="/blog" className="hover:text-gray-300">
                     {i18next.t("nav.blog")}
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="/freemint" className="hover:text-gray-300">
+                  <Link href="/freemint" className="hover:text-gray-300">
                     {i18next.t("nav.mint")}
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
