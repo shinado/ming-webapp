@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useStatus } from "../../app/WalletStatus"; // adjust the path as needed
-import { Avatar, Dropdown, Navbar } from "flowbite-react";
+import { Button, Avatar, Dropdown, Navbar } from "flowbite-react";
 import "../../app/globals.css";
 import { getDisplayableValueFromContract } from "@/app/public_api";
 import i18next from "../../app/i18n";
@@ -10,7 +10,7 @@ import i18n from "i18next";
 
 function displayAddress(addr) {
   if (addr.length >= 10) {
-    return addr.substring(0, 5) + "..." + addr.substring(addr.length - 5);
+    return addr.substring(0, 4) + "..." + addr.substring(addr.length - 4);
   } else {
     return addr;
   }
@@ -45,7 +45,7 @@ export default function Navigation({ selected }) {
       <Dropdown
         arrowIcon={false}
         inline
-        label={<Avatar alt="User settings" img="/icon_avatar.png" rounded />}
+        label={<Button outline gradientDuoTone="cyanToBlue" size="xs">{address}</Button>}
       >
         <Dropdown.Header>
           <div className="flex justify-between items-center">

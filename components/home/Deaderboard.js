@@ -115,7 +115,7 @@ export default function Deaderboard({ displayButton, maxDisplay }) {
   return (
     <div className="App bg-slate-800 flex justify-center items-center min-h-screen">
       <div className="container mx-auto px-4">
-        <h1 className="text-5xl font-bold text-center my-6">
+        <h1 className="text-5xl text-white font-bold text-center my-6">
           {i18next.t("deaderboard.title")}
         </h1>
 

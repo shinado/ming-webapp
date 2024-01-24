@@ -22,14 +22,14 @@ export default function Home() {
   };
 
   return (
-    <>
+    <div className="w-full">
       <StatusProvider>
         {/* Overlay Bar */}
         <div className="absolute z-10 w-full">
-          <div className="bg-black text-white text-sm p-2 text-center">
+          <div className="hidden md:block bg-black text-white text-sm p-2 text-center">
             View source code in{" "}
-            <a href="https://github.com/shinado/ming-webapp">GitHub</a>, make some changes, and
-            make pull requests! 
+            <a href="https://github.com/shinado/ming-webapp">GitHub</a>, make
+            some changes, and make pull requests!
           </div>
           <Navigation selected="home" />
         </div>
@@ -40,9 +40,9 @@ export default function Home() {
         <Deaderboard displayButton={false} maxDisplay={100} />
         <Burn ref={ref} />
         <Team />
-        <Roadmap />
+        {/* <Roadmap /> */}
         <Footer />
       </StatusProvider>
-    </>
+    </div>
   );
 }

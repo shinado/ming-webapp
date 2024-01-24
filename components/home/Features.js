@@ -4,9 +4,9 @@ import Link from "next/link";
 function FeatureCard({ title, description, imageUrl, cta, feature }) {
   return (
     <div className="bg-gray-800 col-span-1 m-4 p-8 rounded-lg shadow-md text-left break-words">
-      <h3 className="text-5xl font-semibold mb-2">{title}</h3>
+      <h3 className="text-5xl text-white font-semibold mb-2">{title}</h3>
       <p className="text-gray-300">{description}</p>
-      <img src={imageUrl} alt="" className="my-8 w-40" />{" "}
+      <img src={imageUrl} alt="" className="my-8 w-40 hidden md:block" />{" "}
       <div className="mt-4">
         {cta && <div>{cta}</div>}
         {feature && (
@@ -22,7 +22,7 @@ function FeatureCard({ title, description, imageUrl, cta, feature }) {
 export default function Features() {
   return (
     // <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 p-6">
-    <div className="min-h-screen bg-gray-900 py-20 px-10 p-6">
+    <div className="min-h-screen bg-gray-900 py-20 px-2 md:px-10">
       <div className="text-left px-10">
         <h1 className="text-white text-6xl font-bold">
           {i18next.t("home.feat.title")}
@@ -37,7 +37,7 @@ export default function Features() {
         </p>
       </div>
 
-      <div className="flex flex-col md:flex-row mt-20">
+      <div className="flex flex-col md:flex-row mt-6 md:mt-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
 
           <FeatureCard

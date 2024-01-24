@@ -12,7 +12,7 @@ const Introduction = () => {
         <div className="flex flex-col md:flex-row mt-10">
           <div className="md:w-2/5"></div>
           <div className="md:w-3/5">
-            <p className="text-gray-200 text-xl mx-10 text-left w-[480px]">
+            <p className="text-gray-200 text-xl mx-10 text-left">
               {i18next.t("home.intro.sub")}
             </p>
           </div>
@@ -20,7 +20,7 @@ const Introduction = () => {
       </div>
 
       <div className="flex flex-col md:flex-row ">
-        <div className="md:w-2/5">
+        <div className="md:w-2/5 hidden md:block">
           <img className="p-10 blur-xl" src="/ming_logo_large.png" />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 w-3/5 p-4">

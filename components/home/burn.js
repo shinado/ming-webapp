@@ -80,9 +80,9 @@ const Burn = forwardRef((props, ref) => {
   };
 
   const baseClassName = " relative flex justify-center items-center h-full";
-  const className = " bg-slate-900 px-4 sm:px-6 lg:px-8" + baseClassName;
+  const className = " bg-slate-900 px-4 sm:px-6 lg:px-8 py-10" + baseClassName;
   return (
-    <div ref={ref} className="relative h-screen">
+    <div ref={ref} className="relative h-full md:h-screen">
       <div
         style={{
           position: "absolute",
@@ -133,10 +133,10 @@ const Burn = forwardRef((props, ref) => {
       <div className={(playVideo ? "fadeOut" : "fadeIn") + className}>
         {/* set max width for this div */}
         <div className="w-full max-w-3xl text-center">
-          <h2 className="text-5xl font-extrabold text-white-900">
+          <h2 className="text-5xl font-extrabold text-white">
             {i18next.t("home.burn.title")}
           </h2>
-          <p className="mt-4 text-lg text-white-500">
+          <p className="mt-4 text-lg text-white">
             {i18next.t("home.burn.sub")}
           </p>
           <p className="text-base text-white-500">
