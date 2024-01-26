@@ -302,6 +302,7 @@ const resources = {
       "home.burn.form.amount": "燃烧数量",
       "home.burn.form.na": "不适用",
       "home.burn.form.learn": "燃烧$MING会发生什么？",
+      "home.burn.form.learn.desc":"燃烧的冥币会转入到鬼魂地址（0x44444444 + 鬼魂姓名/出生死亡日期的md5 hash）。因为鬼魂地址不被任何活着的人持有，因此燃烧的冥币会退出永久流通，形成通缩。",
       "home.burn.form.message": "口信",
       "home.burn.form.message.hint": "我秦哥才是千古第一帝！",
       "home.burn.add.message": "捎个口信",

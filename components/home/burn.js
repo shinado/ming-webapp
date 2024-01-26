@@ -3,6 +3,7 @@ import WalletConnect from "./walletConnect";
 import MingCoin from "../../abi/MingCoin.json";
 const abi = MingCoin.abi;
 const { ethers } = require("ethers");
+import { Tooltip } from 'flowbite-react';
 import Link from "next/link";
 import ReactPlayer from "react-player";
 import i18next from "../../app/i18n";
@@ -180,7 +181,7 @@ const Burn = forwardRef((props, ref) => {
                   />
                   <label
                     for="default-checkbox"
-                    class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                    class="ms-2 text-sm font-medium text-gray-300"
                   >
                     {i18next.t("home.burn.form.na")}
                   </label>
@@ -206,7 +207,7 @@ const Burn = forwardRef((props, ref) => {
                   />
                   <label
                     for="default-checkbox"
-                    class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                    class="ms-2 text-sm font-medium text-gray-300"
                   >
                     {i18next.t("home.burn.form.na")}
                   </label>
@@ -257,18 +258,18 @@ const Burn = forwardRef((props, ref) => {
               isLoading={loading}
             />
 
-            {/* <div className="flex justify-center items-center">
+            <div className="flex justify-center items-center ">
               <Tooltip
                 className="mt-2 text-center max-w-3xl"
                 content={i18next.t("home.burn.form.learn.desc")
               }
                 trigger="hover"
               >
-                <p className="mt-2 text-center text-sm text-gray-300">
+                <p className="mt-2 text-center text-sm text-gray-400 cursor-pointer">
                   {i18next.t("home.burn.form.learn")}
                 </p>
               </Tooltip>
-            </div> */}
+            </div>
           </div>
         </div>
       </div>
