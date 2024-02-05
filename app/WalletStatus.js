@@ -1,5 +1,4 @@
 import React, { createContext, useState, useContext } from "react";
-import getBalance from "./okx";
 
 const WalletStatus = createContext({
   status: { address: "", balance: "" },
@@ -39,11 +38,11 @@ export const StatusProvider = ({ children }) => {
       setConnecting(false);
     } else {
       if (chain == "btc") {
-        // const response = await fetch(
-        //   "/api/btc/getBalanceOf?userAddress=" + address + "&token=ming"
-        // );
+        const data = await fetch(
+          "/api/btc/getBalanceOf?userAddress=" + address + "&token=ming"
+        );
 
-        const data = await getBalance("ming", address);
+        // const data = await getBalance("ming", address);
         const balance = data.balance;
 
         setStatus({

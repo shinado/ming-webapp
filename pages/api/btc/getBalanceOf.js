@@ -9,7 +9,7 @@ export default async function handler(req, res) {
       token: tick
     }
     const path = `/api/v5/explorer/brc20/address-balance-list`;
-    const data = await sendGetRequest(path, params);
+    const response = await sendGetRequest(path, params);
 
     if (!response.ok) {
       res
