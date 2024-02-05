@@ -17,6 +17,7 @@ export default async function handler(req, res) {
         .json({ error: `HTTP error! status: ${response.status}` });
     } else {
       const data = await response.json();
+      consolog.log("data: ", data);
 
       if (data.code == "0") {
         const balance = data.data.balance; 
