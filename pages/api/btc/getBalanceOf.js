@@ -22,7 +22,8 @@ export default async function handler(req, res) {
         const balance = data.data.balance; 
         res.status(200).json({ balance });
       } else {
-        throw new Error("Error: "+data.msg);
+        const msg = data.msg;
+        res.status(data.code).json({ msg });
       }
     }
   } catch (error) {

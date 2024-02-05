@@ -39,7 +39,7 @@ export const StatusProvider = ({ children }) => {
     } else {
       if (chain == "btc") {
         const data = await fetch(
-          "/api/btc/getBalanceOf?userAddress=" + address + "&token=ming"
+          "/api/btc/getBalanceOf?userAddress=" + address + "&tick=ming"
         );
 
         // const data = await getBalance("ming", address);
