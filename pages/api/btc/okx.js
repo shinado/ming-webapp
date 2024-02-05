@@ -53,8 +53,9 @@ export async function sendGetRequest(request_path, params) {
   };
 
   const url =
-    // ENDPOINT +
-    request_path + (params ? `?${querystring.stringify(params)}` : "");
+    ENDPOINT +
+    request_path +
+    (params ? `?${querystring.stringify(params)}` : "");
 
   const options = {
     hostname: "www.okx.com",

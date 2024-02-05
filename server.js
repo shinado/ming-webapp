@@ -13,7 +13,7 @@ const handle = app.getRequestHandler()
 // 代理配置表，这里和一般的 webpack 配置是一样的。
 const proxyTable = {
   '/api': {
-    target: 'https://mingco.in',
+    target: 'https://ming-dev.zeabur.app',
     pathRewrite: {
       '^/api': '/api'
     },
@@ -25,12 +25,12 @@ app.prepare().then(() => {
   const server = express()
 
   // 如果是开发环境，则代理接口
-  // if (dev) {
-  //   console.log("using proxy");
-  //   server.use('/api', createProxyMiddleware(proxyTable['/api']));
-  // }else{
-  //   console.log("not using proxy");
-  // }
+  if (dev) {
+    console.log("using proxy");
+    server.use('/api', createProxyMiddleware(proxyTable['/api']));
+  }else{
+    console.log("not using proxy");
+  }
 
   // 托管所有请求
   server.all('*', (req, res) => {
