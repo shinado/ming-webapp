@@ -4,11 +4,10 @@ import BigNumber from "bignumber.js";
 import MingCoin from "../../abi/MingCoin.json";
 import Link from "next/link";
 const { ethers } = require("ethers");
-console.log(ethers);
 const mingABI = MingCoin.abi;
 import i18next from "../../app/i18n";
 import "../../app/globals.css";
-import Navigation from "@/components/home/navbar";
+import { useStatus } from "../../app/WalletStatus";
 
 function toNumber(amount) {
   const num = BigNumber(amount).dividedBy(1e18);
@@ -24,18 +23,19 @@ function toNumber(amount) {
 }
 
 export default function Deaderboard({ displayButton, maxDisplay }) {
+  const { chain } = useStatus();
   const [leaderboardData, setLeaderboardData] = useState([]);
 
   useEffect(() => {
+    setLeaderboardData([]);
     listBurnings();
-  }, []);
+  }, [chain]);
 
   const listBurnings = async () => {
-    if (typeof window.ethereum !== "undefined") {
+    if (chain == "eth") {
       const provider = new ethers.JsonRpcProvider(
         process.env.NEXT_PUBLIC_INFURA_URL
       );
-      // const provider = new ethers.BrowserProvider(window.ethereum);
 
       if (provider) {
         //I'm calling this view function in contract getBurningList(), how do I assign the chainId with this contract to make sure it's calling from the correct chain?
@@ -58,14 +58,14 @@ export default function Deaderboard({ displayButton, maxDisplay }) {
               .toNumber();
           });
 
-          setLeaderboardData(sorted.slice(0,maxDisplay));
+          setLeaderboardData(sorted.slice(0, maxDisplay));
           return list;
         } catch (e) {
           return [];
         }
       }
-    } else {
-      console.log("Install MetaMask");
+    } else if (chain == "btc") {
+      //todo
     }
   };
 
@@ -116,7 +116,7 @@ export default function Deaderboard({ displayButton, maxDisplay }) {
     <div className="App bg-slate-800 flex justify-center items-center min-h-screen">
       <div className="container mx-auto px-4">
         <h1 className="text-5xl text-white font-bold text-center my-6">
-          {i18next.t("deaderboard.title")}
+          {chain.toUpperCase()} {i18next.t("deaderboard.title")} 
         </h1>
 
         {table}

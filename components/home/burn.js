@@ -3,15 +3,17 @@ import WalletConnect from "./walletConnect";
 import MingCoin from "../../abi/MingCoin.json";
 const abi = MingCoin.abi;
 const { ethers } = require("ethers");
-import { Tooltip } from 'flowbite-react';
+import { Tooltip } from "flowbite-react";
 import Link from "next/link";
 import ReactPlayer from "react-player";
 import i18next from "../../app/i18n";
 import DateInput from "@/components/home/DateInput";
 import "../../app/globals.css";
+import { useStatus } from "../../app/WalletStatus"; 
 import LoadingText from "../LoadingText";
 
 const Burn = forwardRef((props, ref) => {
+  const { chain } = useStatus();
   const [playVideo, setPlayVideo] = useState(false);
 
   const [birthDate, setBirthDate] = useState("");
@@ -30,8 +32,14 @@ const Burn = forwardRef((props, ref) => {
     // setBalance(balance);
   };
 
-  const handleBurnClick = async () => {
-    setLoading(true);
+  const burnOnBTC = async () => {
+    if (typeof window.okxwallet !== "undefined") {
+      
+    } else {
+    }
+  };
+
+  const burnOnETH = async () => {
     if (typeof window.ethereum !== "undefined") {
       const provider = new ethers.BrowserProvider(window.ethereum);
       // const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -77,6 +85,15 @@ const Burn = forwardRef((props, ref) => {
       }
     } else {
       console.log("Install MetaMask");
+    }
+  };
+
+  const handleBurnClick = async () => {
+    setLoading(true);
+    if (chain == "eth") {
+      burnOnETH();
+    } else {
+      burnOnBTC();
     }
   };
 
@@ -261,8 +278,7 @@ const Burn = forwardRef((props, ref) => {
             <div className="flex justify-center items-center ">
               <Tooltip
                 className="mt-2 text-center max-w-3xl"
-                content={i18next.t("home.burn.form.learn.desc")
-              }
+                content={i18next.t("home.burn.form.learn.desc")}
                 trigger="hover"
               >
                 <p className="mt-2 text-center text-sm text-gray-400 cursor-pointer">

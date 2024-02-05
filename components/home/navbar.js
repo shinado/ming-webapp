@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useStatus } from "../../app/WalletStatus"; // adjust the path as needed
+import { useStatus } from "../../app/WalletStatus"; 
 import { Button, Avatar, Dropdown, Navbar } from "flowbite-react";
 import "../../app/globals.css";
 import { getDisplayableValueFromContract } from "@/app/public_api";
@@ -16,21 +16,9 @@ function displayAddress(addr) {
   }
 }
 
-function handleAccountsChanged(accounts) {
-  checkStatus();
-}
-
-function disconnect() {
-  // If you're using a provider like MetaMask, you can reset it
-  if (window.ethereum) {
-    window.ethereum.removeListener("accountsChanged", handleAccountsChanged);
-    window.ethereum = null;
-  }
-}
-
-export default function Navigation({ selected }) {
+export default function Navigation({ selected}) {
   console.log("selected: ", selected);
-  const { connecting, status, checkStatus, connectWallet } = useStatus();
+  const { connecting, status, checkStatus, connectWallet, chain, changeChain} = useStatus();
   const [address, setAddress] = useState("");
   const [balance, setBalance] = useState("");
   const [language, setLanguage] = useState("en");
@@ -40,12 +28,73 @@ export default function Navigation({ selected }) {
     setBalance(getDisplayableValueFromContract(status.balance));
   }, [status.balance, status.address]);
 
+  const handleChainSelection = (chain) => () => {
+    changeChain(chain);
+    // onChainSelected(chain);
+  };
+
+  const trigger = (
+    <div className="flex cursor-pointer">
+      <img
+        src="/ic_wallet.png"
+        className="w-5 h-5" // Adjust size as needed
+      />
+    </div>
+  );
+
+  const chainSelection = (
+    <div className="mr-4">
+      <Dropdown
+        dismissOnClick={true}
+        renderTrigger={() => (
+          <div className="flex items-center p-2 cursor-pointer hover:bg-gray-700 rounded">
+            <img
+              src={`/logo_${chain}.png`}
+              alt="Edit"
+              className="w-5 h-5" // Adjust size as needed
+            />
+            <img
+              src={`/ic_dropdown.png`}
+              alt="Edit"
+              className="ml-2 w-4 h-4" // Adjust size as needed
+            />
+          </div>
+        )}
+      >
+        <Dropdown.Item onClick={handleChainSelection("eth")}>
+          <div className="flex items-center">
+            <img src="/logo_eth.png" className="w-5 h-5" />
+            <span className="ml-2 block text-sm font-bold">Ethereum</span>
+          </div>
+        </Dropdown.Item>
+        <Dropdown.Item onClick={handleChainSelection("btc")}>
+          <div className="flex items-center">
+            <img src="/logo_btc.png" className="w-5 h-5" />
+            <span className="ml-2 block text-sm font-bold">Bitcoin</span>
+          </div>
+        </Dropdown.Item>
+      </Dropdown>
+    </div>
+  );
+
+  const disconnect = () => {
+    // If you're using a provider like MetaMask, you can reset it
+    if (window.ethereum) {
+      window.ethereum = null;
+      checkStatus();
+    }
+  };
+
   const dropdown = (
-    <div className="flex md:order-2">
+    <div>
       <Dropdown
         arrowIcon={false}
         inline
-        label={<Button outline gradientDuoTone="cyanToBlue" size="xs">{address}</Button>}
+        label={
+          <Button outline gradientDuoTone="cyanToBlue" size="xs">
+            {address}
+          </Button>
+        }
       >
         <Dropdown.Header>
           <div className="flex justify-between items-center">
@@ -162,7 +211,7 @@ export default function Navigation({ selected }) {
 
   const button = (
     <button
-      className="flex md:order-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
       onClick={connectWallet}
       disabled={connecting}
     >
@@ -180,7 +229,10 @@ export default function Navigation({ selected }) {
           {i18next.t("nav.title")}
         </span>
       </Navbar.Brand>
-      {address ? dropdown : button}
+      <div className="flex md:order-2 items-center">
+        {chainSelection}
+        {address ? dropdown : button}
+      </div>
       <Navbar.Collapse>
         <Navbar.Link href="/" active={selected == "home"}>
           {i18next.t("nav.home")}

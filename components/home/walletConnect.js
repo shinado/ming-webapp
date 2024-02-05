@@ -11,8 +11,12 @@ const WalletConnect = ({
   const [loading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    console.log("check status on start");
     checkStatus();
   }, []);
+
+  // useEffect(() => {
+  // }, [chain]);
 
   useEffect(() => {
     setIsLoading(isLoading);
