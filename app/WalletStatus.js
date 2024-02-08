@@ -15,8 +15,14 @@ export const StatusProvider = ({ children }) => {
   });
 
   const [connecting, setConnecting] = useState(false);
+  
+  const disconnect= () =>{
+    setStatus({
+      address: "",
+      balance: 0,
+    });
+  }
 
-  // Function to toggle theme
   const changeChain = (chain) => {
     setStatus({
       address: ".....",
@@ -38,11 +44,12 @@ export const StatusProvider = ({ children }) => {
       setConnecting(false);
     } else {
       if (chain == "btc") {
-        const data = await fetch(
+        const response = await fetch(
           "/api/btc/getBalanceOf?userAddress=" + address + "&tick=ming"
         );
+        const data = await response.json();
 
-        // const data = await getBalance("ming", address);
+        console.log("balance data: ", data);
         const balance = data.balance;
 
         setStatus({
@@ -190,6 +197,7 @@ export const StatusProvider = ({ children }) => {
         status,
         checkStatus,
         connectWallet,
+        disconnect,
         chain,
         changeChain,
       }}

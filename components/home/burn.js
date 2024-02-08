@@ -9,8 +9,9 @@ import ReactPlayer from "react-player";
 import i18next from "../../app/i18n";
 import DateInput from "@/components/home/DateInput";
 import "../../app/globals.css";
-import { useStatus } from "../../app/WalletStatus"; 
+import { useStatus } from "../../app/WalletStatus";
 import LoadingText from "../LoadingText";
+import { getBTCAddress } from "@/app/btc_utils";
 
 const Burn = forwardRef((props, ref) => {
   const { chain } = useStatus();
@@ -34,9 +35,23 @@ const Burn = forwardRef((props, ref) => {
 
   const burnOnBTC = async () => {
     if (typeof window.okxwallet !== "undefined") {
+      const address = getBTCAddress(getPersonInfo());
       
     } else {
     }
+  };
+
+  const getPersonInfo = () => {
+    const lifespan =
+      birthDateNA && deathDateNA
+        ? ""
+        : " (" +
+          (birthDateNA ? "NA" : birthDate) +
+          " - " +
+          (deathDateNA ? "NA" : deathDate) +
+          ")";
+
+    return personName + lifespan;
   };
 
   const burnOnETH = async () => {
@@ -54,16 +69,7 @@ const Burn = forwardRef((props, ref) => {
           const signer = await provider.getSigner();
           const contractWithSigner = contract.connect(signer);
 
-          const lifespan =
-            birthDateNA && deathDateNA
-              ? ""
-              : " (" +
-                (birthDateNA ? "NA" : birthDate) +
-                " - " +
-                (deathDateNA ? "NA" : deathDate) +
-                ")";
-
-          const personInfo = personName + lifespan;
+          const personInfo = getPersonInfo();
           const amout = ethers.parseEther(mingAmount);
 
           const tx = await contractWithSigner.burn(personInfo, amout, message);

@@ -18,7 +18,7 @@ function displayAddress(addr) {
 
 export default function Navigation({ selected}) {
   console.log("selected: ", selected);
-  const { connecting, status, checkStatus, connectWallet, chain, changeChain} = useStatus();
+  const { connecting, status, checkStatus, connectWallet, disconnect, chain, changeChain} = useStatus();
   const [address, setAddress] = useState("");
   const [balance, setBalance] = useState("");
   const [language, setLanguage] = useState("en");
@@ -77,13 +77,6 @@ export default function Navigation({ selected}) {
     </div>
   );
 
-  const disconnect = () => {
-    // If you're using a provider like MetaMask, you can reset it
-    if (window.ethereum) {
-      window.ethereum = null;
-      checkStatus();
-    }
-  };
 
   const dropdown = (
     <div>
