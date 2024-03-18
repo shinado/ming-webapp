@@ -5,6 +5,7 @@ export default async function handler(req, res) {
   const etherscanApiKey = process.env.NEXT_PUBLIC_ETHERSCAN_API_KEY;
 
   try {
+    //https://api-sepolia-optimistic.etherscan.io/api?module=account&action=tokenbalance&contractaddress=0x80AfFC3E23B59D63F8830Fcd9f9b4dC08F98BDEb&address=0x5584517fc4A9FDCFD32b8A41246ee30b44798dd5&tag=latest&apikey=NDHAMG3J6C5D3D4TQ8WNQCW5NESHBFG3Y7
     const etherscanUrl = process.env.ETHERSCAN_END_POINT + `api?module=account&action=tokenbalance&contractaddress=${contractAddress}&address=${userAddress}&tag=latest&apikey=${etherscanApiKey}`;
     console.log(etherscanUrl);
 

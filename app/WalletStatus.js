@@ -76,20 +76,20 @@ export const StatusProvider = ({ children }) => {
               method: "wallet_addEthereumChain",
               params: [
                 {
-                  chainId: goerliChainId,
-                  chainName: "Goerli Test Network",
-                  rpcUrls: ["https://rpc.ankr.com/eth_goerli"],
+                  chainId: chainId,
+                  chainName: "OP Sepolia",
+                  rpcUrls: ["https://sepolia.optimism.io/"],
                   nativeCurrency: {
-                    name: "Goerli ETH",
-                    symbol: "GOR",
+                    name: "Sepolia ETH",
+                    symbol: "ETH",
                     decimals: 18,
                   },
-                  blockExplorerUrls: ["https://goerli.etherscan.io"],
+                  blockExplorerUrls: ["https://sepolia-optimistic.etherscan.io/"],
                 },
               ],
             });
           } catch (addError) {
-            console.error("Failed to add Goerli testnet:", addError);
+            console.error("Failed to add Sepolia testnet:", addError);
           }
         } else {
           console.error("Failed to switch to Goerli testnet:", switchError);
@@ -108,7 +108,8 @@ export const StatusProvider = ({ children }) => {
         const accounts = await window.ethereum.request({
           method: "eth_requestAccounts",
         });
-        await switchNetwork("0x5");
+        //op sepolia
+        await switchNetwork("0xAA37DC");
         onAddressChanged(accounts[0]);
 
         setConnecting(false);
