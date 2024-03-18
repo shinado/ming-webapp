@@ -226,7 +226,7 @@ export default function Navigation({ selected}) {
         {chainSelection}
         {address ? dropdown : button}
       </div>
-      <Navbar.Collapse>
+      <Navbar.Collapse className="md:flex hidden">
         <Navbar.Link href="/" active={selected == "home"}>
           {i18next.t("nav.home")}
         </Navbar.Link>

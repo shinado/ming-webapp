@@ -434,13 +434,17 @@ const resources = {
   },
 };
 
+const userLang = navigator.language || navigator.userLanguage; 
+console.log('The browser language is: ' + userLang);
+const lang = userLang.startsWith("zh")? "zh":"en"
+
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
   // .use(LanguageDetector)
   .init({
     resources,
     fallbackLng: "en",
-    lng: "zh", // language to use, more information here: https://www.i18next.com/overview/configuration-options#languages-namespaces-resources
+    lng: lang, // language to use, more information here: https://www.i18next.com/overview/configuration-options#languages-namespaces-resources
     // you can use the i18n.changeLanguage function to change the language manually: https://www.i18next.com/overview/api#changelanguage
     // if you're using a language detector, do not define the lng option
     interpolation: {
